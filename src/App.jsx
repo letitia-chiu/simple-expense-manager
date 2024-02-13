@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom'
 
 // Views
 import IncomeListPage from './views/IncomeListPage'
+import CreatePage from './views/CreatePage'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
@@ -16,7 +17,7 @@ function App() {
 
     // Initial check screen size
     checkScreenSize()
-    
+
     // Set up event listener
     window.addEventListener('resize', checkScreenSize)
 
@@ -31,6 +32,10 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
+            <Route
+              path="/income/create"
+              element={<CreatePage isMobile={isMobile} page="income" />}
+            />
             <Route
               path="/income"
               element={<IncomeListPage isMobile={isMobile} />}
