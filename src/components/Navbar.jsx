@@ -39,7 +39,7 @@ const Tabs = styled.div`
 
 const UserLogout = styled.div`
   color: ${({ theme }) => theme.mainTextColor};
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   display: none;
   margin: 0 20px;

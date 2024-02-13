@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   font-size: 14px;
   font-weight: 600;
   color: ${({ theme }) => theme.subColor};
+  cursor: pointer;
 
   svg {
     width: 30px;
@@ -24,6 +25,8 @@ const Wrapper = styled.div`
 
   &.active {
     border-bottom: 2px solid;
+  }
+  &.active, &:hover {
     color: ${({ theme }) => theme.mainColor};
     svg {
       fill: ${({ theme }) => theme.mainColor};
