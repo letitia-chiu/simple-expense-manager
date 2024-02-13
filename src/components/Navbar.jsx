@@ -54,7 +54,7 @@ const UserLogout = styled.div`
     width: 30px;
     height: 30px;
     margin-bottom: 10px;
-    fill: ${({ theme }) => theme.mainTextColor};
+    fill: ${({ theme }) => theme.subColor};
   }
 
   &:hover {

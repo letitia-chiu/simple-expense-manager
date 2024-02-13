@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import MonthlyHeader from '../components/MonthlyHeader'
 import RecordList from '../components/RecordList'
 import RecordTable from '../components/RecordTable'
+import CreateButton from '../components/CreateButton'
 
 const dummyIncomes = [
   {
@@ -34,6 +35,7 @@ function IncomeListPage({ isMobile }) {
       <Navbar isMobile={isMobile} page="income"/>
       <MonthlyHeader isMobile={isMobile} page="income"/>
       {isMobile ? <RecordList records={dummyIncomes}/> : <RecordTable records={dummyIncomes}/> }
+      <CreateButton isMobile={isMobile}/>
     </Container>
   )
 }
