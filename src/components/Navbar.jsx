@@ -71,16 +71,16 @@ const UserLogout = styled.div`
   }
 `
 
-function Navbar({ isMobile }) {
+function Navbar({ isMobile, page }) {
   return (
     <Wrapper>
       <Navbrand>Simple Expense Manager</Navbrand>
       <Tabs>
-        <NavTab isActive={true} type="income"/>
-        <NavTab type="expense"/>
-        <NavTab type="report"/>
-        {isMobile && <NavTab type="setting"/>}
-        {!isMobile && <NavTab type="category"/>}
+        <NavTab isActive={page === 'income'} type="income"/>
+        <NavTab isActive={page === 'expense'} type="expense"/>
+        <NavTab isActive={page === 'report'} type="report"/>
+        {isMobile && <NavTab isActive={page === 'setting'} type="setting"/>}
+        {!isMobile && <NavTab isActive={page === 'category'} type="category"/>}
       </Tabs>
       <UserLogout>
         <LogoutIcon />

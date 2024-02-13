@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react'
 import { ThemeProvider } from '@emotion/react'
 import theme from './theme'
 
-// Components
-import Container from './components/Container'
-import Navbar from './components/Navbar'
-import MonthlyHeader from './components/MonthlyHeader'
+// Views
+import IncomeListPage from './views/IncomeListPage'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
@@ -29,10 +27,7 @@ function App() {
   return (
     <ThemeProvider theme={theme.light}>
       <div className="App">
-        <Container>
-          <Navbar isMobile={isMobile}/>
-          <MonthlyHeader isMobile={isMobile}/>
-        </Container>
+        <IncomeListPage isMobile={isMobile} />
       </div>
     </ThemeProvider>
   )

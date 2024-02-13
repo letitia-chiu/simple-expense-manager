@@ -74,9 +74,13 @@ const MonthSwitch = styled.div`
   }
 `
 
-const NextMonth = styled.div``
+const pageTitle = {
+  income: "Income",
+  expense: "Expense",
+  report: "Report"
+}
 
-function MonthlyHeader({ isMobile }) {
+function MonthlyHeader({ isMobile, page }) {
   return (
     <Wrapper>
       <Content>
@@ -86,7 +90,7 @@ function MonthlyHeader({ isMobile }) {
         </MonthSwitch>
 
         <TitleWrapper>
-          <Title>Income</Title>
+          <Title>{pageTitle[page]}</Title>
           <Subtitle>Jan 2024</Subtitle>
         </TitleWrapper>
 
