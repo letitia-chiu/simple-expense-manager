@@ -11,10 +11,13 @@ const Wrapper = styled.div`
   height: 120px;
   padding: 30px 10px;
   display: flex;
-  
+  justify-content: center;
 
   @media screen and (min-width: 960px) {
     position: unset;
+    justify-content: space-between;
+    height: 100px;
+    padding: 20px 10px;
   }
 `
 
@@ -35,6 +38,7 @@ const Tabs = styled.div`
   flex: 1;
   display: flex;
   justify-content: space-around;
+  max-width: 600px;
 `
 
 const UserLogout = styled.div`
@@ -44,15 +48,18 @@ const UserLogout = styled.div`
   display: none;
   margin: 0 20px;
   min-width: 150px;
+  cursor: pointer;
 
   svg {
     width: 30px;
     height: 30px;
     margin-bottom: 10px;
     fill: ${({ theme }) => theme.mainTextColor};
-    cursor: pointer;
+  }
 
-    &:hover {
+  &:hover {
+    color: ${({ theme }) => theme.mainColor};
+    svg {
       fill: ${({ theme }) => theme.mainColor};
     }
   }

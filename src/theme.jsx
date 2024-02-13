@@ -1,19 +1,19 @@
 const theme = {
   light: {
-    backgroundColor: '#FAF5FF',
-    foregroundColor: '#D6BCFA',
+    backgroundColor: '#F7FAFC',
+    foregroundColor: '#E9D8FD',
     mainColor: '#6B46C1',
     subColor: '#4A5568',
     mainTextColor: '#4A5568',
-    subTextColor: '#A0AEC0'
+    subTextColor: '#718096'
   },
   dark: {
-    backgroundColor: '#FAF5FF',
-    foregroundColor: '#D6BCFA',
+    backgroundColor: '#F7FAFC',
+    foregroundColor: '#E9D8FD',
     mainColor: '#6B46C1',
     subColor: '#4A5568',
     mainTextColor: '#4A5568',
-    subTextColor: '#A0AEC0'
+    subTextColor: '#718096'
   }
 }
 

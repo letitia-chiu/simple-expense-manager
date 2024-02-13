@@ -5,6 +5,7 @@ import theme from './theme'
 // Components
 import Container from './components/Container'
 import Navbar from './components/Navbar'
+import MonthlyHeader from './components/MonthlyHeader'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
@@ -30,7 +31,7 @@ function App() {
       <div className="App">
         <Container>
           <Navbar isMobile={isMobile}/>
-          <p>Hello world</p>
+          <MonthlyHeader isMobile={isMobile}/>
         </Container>
       </div>
     </ThemeProvider>
