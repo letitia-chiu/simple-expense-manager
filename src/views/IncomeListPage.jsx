@@ -3,6 +3,7 @@ import Container from '../components/Container'
 import Navbar from '../components/Navbar'
 import MonthlyHeader from '../components/MonthlyHeader'
 import RecordList from '../components/RecordList'
+import RecordTable from '../components/RecordTable'
 
 const dummyIncomes = [
   {
@@ -32,7 +33,7 @@ function IncomeListPage({ isMobile }) {
     <Container>
       <Navbar isMobile={isMobile} page="income"/>
       <MonthlyHeader isMobile={isMobile} page="income"/>
-      <RecordList records={dummyIncomes}/>
+      {isMobile ? <RecordList records={dummyIncomes}/> : <RecordTable records={dummyIncomes}/> }
     </Container>
   )
 }
