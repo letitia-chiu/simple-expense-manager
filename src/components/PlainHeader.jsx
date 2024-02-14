@@ -7,15 +7,15 @@ import {
 
 const pageTitle = {
   income: "Add New Income",
-  expense: "Add New Expense"
+  expense: "Add New Expense",
 }
 
-function PlainHeader({ page }) {
+function PlainHeader({ page, isEdit }) {
   return (
     <HeaderWrapper>
       <HeaderContent>
         <HeaderTitleWrapper>
-          <HeaderTitle>{pageTitle[page]}</HeaderTitle>
+          <HeaderTitle>{isEdit ? 'Edit Record' : pageTitle[page]}</HeaderTitle>
         </HeaderTitleWrapper>
       </HeaderContent>
     </HeaderWrapper>

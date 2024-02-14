@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom'
 import IncomeListPage from './views/IncomeListPage'
 import ExpenseListPage from './views/ExpenseListPage'
 import CreatePage from './views/CreatePage'
+import EditPage from './views/EditPage'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
@@ -48,6 +49,10 @@ function App() {
             <Route
               path="/expense"
               element={<ExpenseListPage isMobile={isMobile} />}
+            />
+            <Route
+              path="/edit/:id"
+              element={<EditPage isMobile={isMobile} />}
             />
             <Route
               path="*"
