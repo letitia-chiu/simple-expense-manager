@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import StyledCell from './StyledCell'
@@ -67,7 +68,9 @@ function RecordRow({ record }) {
       </Td>
       <Td>
         <StyledCell justify="space-around">
-          <ActionButton><EditIcon /></ActionButton>
+          <Link to={`/edit/${record.id}`}>
+            <ActionButton><EditIcon /></ActionButton>
+          </Link>
           <ActionButton><DeleteIcon /></ActionButton>
         </StyledCell>
       </Td>
