@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import dayjs from 'dayjs'
+import { Link } from 'react-router-dom'
 
 const RecordWrapper = styled.div`
   display: flex;
@@ -46,6 +47,7 @@ const RecordAmount = styled.div`
 
 function RecordItem({ record }) {
   return (
+    <Link to={`/edit/${record.id}`}>
     <RecordWrapper>
       <RecordDate>{dayjs(record.date).format('M/D')}</RecordDate>
       <RecordMain>
@@ -54,6 +56,7 @@ function RecordItem({ record }) {
       </RecordMain>
       <RecordAmount>{record.amount}</RecordAmount>
     </RecordWrapper>
+    </Link>
   )
 }
 

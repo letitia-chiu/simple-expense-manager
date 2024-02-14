@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getRecord } from '../api/record'
+import { toast } from '../utils/helpers'
 import dayjs from 'dayjs'
 import {
   FormControl, FormLabel, FormErrorMessage,
@@ -21,14 +23,14 @@ const dummyCat = [
 
 // ******** Main Function ******** //
 
-function RecordForm({ page, record }) {
+function RecordForm({ page, recordId }) {
   const navigate = useNavigate()
 
   // ** Input useState
-  const [dateInput, setDateInput] = useState(() => record?.date || dayjs().format('YYYY-MM-DD'))
-  const [titleInput, setTitleInput] = useState(() => record?.title || '')
-  const [categoryInput, setCategoryInput] = useState(() => record?.categoryId || '')
-  const [amountInput, setAmountInput] = useState(() => record?.amount || '')
+  const [dateInput, setDateInput] = useState(dayjs().format('YYYY-MM-DD'))
+  const [titleInput, setTitleInput] = useState('')
+  const [categoryInput, setCategoryInput] = useState('')
+  const [amountInput, setAmountInput] = useState('')
 
   // ** Input validation useState
   const [titleInvalid, setTitleInvalid] = useState(false)
@@ -81,6 +83,30 @@ function RecordForm({ page, record }) {
     console.log('Delete')
   }
 
+  // ** Get data from API when page first loads
+  useEffect(() => {
+    const getRecordAsync = async () => {
+      try {
+        const res = await getRecord(recordId)
+        if (res.success) {
+          setDateInput(res.record.date)
+          setTitleInput(res.record.title)
+          setAmountInput(res.record.amount)
+          setCategoryInput(res.record.categoryId)
+        } else {
+          // Handle error message
+          const message = res.message || ''
+          toast('error', 'Loading Failed', message)
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }
+    if (recordId) {
+      getRecordAsync()
+    }
+  }, [recordId])
+
   // ******** JSX return ******** //
   return (
     <Stack w='90%' my={3} spacing={5}>
@@ -88,7 +114,7 @@ function RecordForm({ page, record }) {
         <FormLabel>Date</FormLabel>
         <Input
           type='date'
-          value={dateInput} 
+          value={dateInput}
           onChange={handleDateChange}
         />
       </FormControl>
@@ -131,7 +157,7 @@ function RecordForm({ page, record }) {
       </FormControl>
 
       <ButtonGroup justifyContent='end' spacing={5} mt={5}>
-        {record && <IconButton
+        {recordId && <IconButton
           colorScheme='red'
           aria-label='Delete'
           icon={<DeleteIcon />}

@@ -1,27 +1,19 @@
+import { useParams } from 'react-router-dom'
+
 // Components
 import Container from '../components/Container'
 import Navbar from '../components/Navbar'
 import PlainHeader from '../components/PlainHeader'
 import RecordForm from '../components/RecordForm'
 
-const dummyRecord = {
-  id: 1,
-  title: 'Jan Salary',
-  amount: 50000,
-  date: '2024-01-05',
-  categoryId: 6,
-  Category: {
-    id: 6,
-    name: 'Salary'
-  }
-}
-
 function EditPage({ isMobile, page }) {
+  const { id } = useParams()
+
   return (
     <Container>
       <Navbar isMobile={isMobile} page={page}/>
       <PlainHeader isEdit={true}/>
-      <RecordForm page={page} record={dummyRecord}/>
+      <RecordForm page={page} recordId={id}/>
     </Container>
   )
 }

@@ -25,3 +25,23 @@ export const getRecords = async (type, date) => {
     return { success: false, message}
   }
 }
+
+export const getRecord = async (id) => {
+  try {
+    if (!id) return
+
+    // Send request
+    const url = `${baseUrl}/${id}`
+    const config = getAuthConfig()
+    const { data } = await axios.get(url, config)
+
+    // Return data
+    return { success: true, record: data.record}
+  } catch (err) {
+    console.error('[Get record failed]:', err)
+
+    // Return error message
+    const message = err.response.data.message
+    return { success: false, message}
+  }
+}
