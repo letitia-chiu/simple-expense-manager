@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes} from 'react-router-dom'
 
 // Views
 import IncomeListPage from './views/IncomeListPage'
+import ExpenseListPage from './views/ExpenseListPage'
 import CreatePage from './views/CreatePage'
 
 function App() {
@@ -39,6 +40,14 @@ function App() {
             <Route
               path="/income"
               element={<IncomeListPage isMobile={isMobile} />}
+            />
+            <Route
+              path="/expense/create"
+              element={<CreatePage isMobile={isMobile} page="expense" />}
+            />
+            <Route
+              path="/expense"
+              element={<ExpenseListPage isMobile={isMobile} />}
             />
             <Route
               path="*"
