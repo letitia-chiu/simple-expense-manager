@@ -8,6 +8,7 @@ import IncomeListPage from './views/IncomeListPage'
 import ExpenseListPage from './views/ExpenseListPage'
 import CreatePage from './views/CreatePage'
 import EditPage from './views/EditPage'
+import LoginPage from './views/LoginPage'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
@@ -34,6 +35,10 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
+            <Route
+              path="/login"
+              element={<LoginPage />}
+            />
             <Route
               path="/income/create"
               element={<CreatePage isMobile={isMobile} page="income" />}
