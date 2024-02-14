@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { InfoOutlineIcon } from '@chakra-ui/icons'
 import { login } from '../api/auth'
-import toast from '../helpers/toast'
+import { toast } from '../utils/helpers'
 
 const Header = styled.div`
   background-color: ${({ theme }) => theme.foregroundColor};

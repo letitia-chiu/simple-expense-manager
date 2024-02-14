@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2'
 
-const toast = (status, title, text) => {
+export const toast = (status, title, text) => {
   if (!status) return
 
   Swal.fire({
@@ -14,5 +14,3 @@ const toast = (status, title, text) => {
     timer: status === 'success' ? 1500 : 9000
   })
 }
-
-export default toast

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ThemeProvider } from '@emotion/react'
-import theme from './theme'
+import theme from './utils/theme'
 import { BrowserRouter, Route, Routes} from 'react-router-dom'
 
 // Views
