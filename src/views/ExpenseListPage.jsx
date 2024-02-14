@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 // Components
 import Container from '../components/Container'
 import Navbar from '../components/Navbar'
@@ -37,7 +39,7 @@ function ExpenseListPage({ isMobile }) {
       <Navbar isMobile={isMobile} page="expense"/>
       <MonthlyHeader isMobile={isMobile} page="expense"/>
       {isMobile ? <RecordList records={dummyExpenses}/> : <RecordTable records={dummyExpenses}/> }
-      <CreateButton isMobile={isMobile}/>
+      <Link to="/expense/create"><CreateButton /></Link>
     </Container>
   )
 }
