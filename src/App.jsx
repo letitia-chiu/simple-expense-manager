@@ -4,8 +4,7 @@ import theme from './utils/theme'
 import { BrowserRouter, Route, Routes} from 'react-router-dom'
 
 // Views
-import IncomeListPage from './views/IncomeListPage'
-import ExpenseListPage from './views/ExpenseListPage'
+import RecordListPage from './views/RecordListPage'
 import CreatePage from './views/CreatePage'
 import EditPage from './views/EditPage'
 import LoginPage from './views/LoginPage'
@@ -45,7 +44,7 @@ function App() {
             />
             <Route
               path="/income"
-              element={<IncomeListPage isMobile={isMobile} />}
+              element={<RecordListPage isMobile={isMobile} type="income" />}
             />
             <Route
               path="/expense/create"
@@ -53,7 +52,7 @@ function App() {
             />
             <Route
               path="/expense"
-              element={<ExpenseListPage isMobile={isMobile} />}
+              element={<RecordListPage isMobile={isMobile} type="expense" />}
             />
             <Route
               path="/edit/:id"

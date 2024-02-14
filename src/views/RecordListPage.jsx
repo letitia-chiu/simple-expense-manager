@@ -12,9 +12,9 @@ import RecordTable from '../components/RecordTable'
 import CreateButton from '../components/CreateButton'
 
 
-function IncomeListPage({ isMobile }) {
+function RecordListPage({ type, isMobile }) {
   const [records, setRecords] = useState([])
-  const [month, setMonth] = useState([])
+  const [month, setMonth] = useState(null)
 
   // ** Data fetching function
   const getRecordsAsync = async (type, date) => {
@@ -43,22 +43,23 @@ function IncomeListPage({ isMobile }) {
       date = date.add(1, 'month')
     } else return
 
-    getRecordsAsync('income', date)
+    getRecordsAsync(type, date)
   }
 
   // ** Get records from API when page first loads
   useEffect(() => {
-    getRecordsAsync('income', new Date())
-  }, [])
+    const date = month || new Date()
+    getRecordsAsync(type, date)
+  }, [type])
 
   return (
     <Container>
-      <Navbar isMobile={isMobile} page="income"/>
-      <MonthlyHeader isMobile={isMobile} page="income" month={month} switchMonth={switchMonth}/>
+      <Navbar isMobile={isMobile} page={type}/>
+      <MonthlyHeader isMobile={isMobile} page={type} month={month} switchMonth={switchMonth}/>
       {isMobile ? <RecordList records={records}/> : <RecordTable records={records}/> }
-      <CreateButton link="/income/create"/>
+      <CreateButton link={`/${type}/create`}/>
     </Container>
   )
 }
 
-export default IncomeListPage
+export default RecordListPage
