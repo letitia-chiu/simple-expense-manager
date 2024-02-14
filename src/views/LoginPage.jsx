@@ -7,8 +7,8 @@ import {
   Input, Button, Stack
 } from '@chakra-ui/react'
 import { InfoOutlineIcon } from '@chakra-ui/icons'
-import Swal from 'sweetalert2'
 import { login } from '../api/auth'
+import toast from '../helpers/toast'
 
 const Header = styled.div`
   background-color: ${({ theme }) => theme.foregroundColor};
@@ -31,21 +31,6 @@ const LoginTitle = styled.div`
   text-align: center;
 `
 
-const toast = (status, title, text) => {
-  if (!status) return
-
-  Swal.fire({
-    toast: true,
-    position: "top",
-    icon: status,
-    title: title || status,
-    text: text || null,
-    showConfirmButton: false,
-    showCloseButton: true,
-    timer: status === 'success' ? 1500 : 9000
-  })
-}
-
 // ******** Main Function ******** //
 
 function LoginPage() {
@@ -65,7 +50,6 @@ function LoginPage() {
       const res = await login(email, password)
 
       if (res.success) {
-        console.log(res.user)
         toast('success', 'Login Success')
         return navigate('/income')
       } else {
