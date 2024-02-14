@@ -3,9 +3,9 @@ import dayjs from 'dayjs'
 import {
   FormControl, FormLabel, FormErrorMessage,
   Input, NumberInput, NumberInputField, Select,
-  Button, ButtonGroup, Stack
+  Button, ButtonGroup, IconButton, Stack
 } from '@chakra-ui/react'
-import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
+import { CheckIcon, CloseIcon, DeleteIcon } from '@chakra-ui/icons'
 
 const dummyCat = [
   {
@@ -74,6 +74,11 @@ function RecordForm({ page, record }) {
     }
   }
 
+  // ** Delete function
+  const handleDelete = () => {
+    console.log('Delete')
+  }
+
   // ******** JSX return ******** //
   return (
     <Stack w='90%' my={3} spacing={5}>
@@ -124,6 +129,13 @@ function RecordForm({ page, record }) {
       </FormControl>
 
       <ButtonGroup justifyContent='end' spacing={5} mt={5}>
+        {record && <IconButton
+          colorScheme='red'
+          aria-label='Delete'
+          icon={<DeleteIcon />}
+          mr={5}
+          onClick={handleDelete}
+        />}
         <Button 
           leftIcon={<CheckIcon />}
           colorScheme='purple'
