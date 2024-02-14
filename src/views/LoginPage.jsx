@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import Container from '../components/Container'
 import {
   FormControl, FormLabel, FormErrorMessage,
-  Input, Button, Stack, useToast
+  Input, Button, Stack
 } from '@chakra-ui/react'
-
+import { InfoOutlineIcon } from '@chakra-ui/icons'
+import Swal from 'sweetalert2'
+import { login } from '../api/auth'
 
 const Header = styled.div`
   background-color: ${({ theme }) => theme.foregroundColor};
@@ -28,59 +31,50 @@ const LoginTitle = styled.div`
   text-align: center;
 `
 
+const toast = (status, title, text) => {
+  if (!status) return
+
+  Swal.fire({
+    toast: true,
+    position: "top",
+    icon: status,
+    title: title || status,
+    text: text || null,
+    showConfirmButton: false,
+    showCloseButton: true,
+    timer: status === 'success' ? 1500 : 9000
+  })
+}
+
 // ******** Main Function ******** //
 
 function LoginPage() {
-  // ** Input useState
-  const [emailInput, setEmailInput] = useState('')
-  const [pwInput, setPwInput] = useState('')
-  const [emailInvalid, setEmailInvalid] = useState(false)
-  const [pwInvalid, setPwInvalid] = useState(false)
-
-  // ** Error Handling
-  const [isError, setIsError] = useState(false)
-  const [errMsg, setErrMsg] = useState('')
-  const errToast = useToast()
-  useEffect(() => {
-    if (errMsg) {
-      errToast({
-        title: 'Error',
-        description: errMsg,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      })
-    }
-    setErrMsg('')
-  }, [errMsg])
-
-  // ** Input handlers
-  const handleEmailInput = e => {
-    setEmailInput(e.target.value)
-    setEmailInvalid(false)
-  }
-
-  const handlePwInput = e => {
-    setPwInput(e.target.value)
-    setPwInvalid(false)
-  }
+  // ** useState & variables
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const inputComplete = email && password
+  const navigate = useNavigate()
 
   // ** Login function
   const handleLogin = async () => {
     // Validate user input
-    if (!emailInput) return setEmailInvalid(true)
-    if (!pwInput) return setPwInvalid(true)
-
-    // Pack user input
-    const payload = {
-      email: emailInput,
-      password: pwInput
-    }
+    if (!inputComplete) return 
 
     // Login
-    console.log('Login:', payload)
-    setIsError(true)
-    setErrMsg('Login failed!')
+    try {
+      const res = await login(email, password)
+
+      if (res.success) {
+        console.log(res.user)
+        toast('success', 'Login Success')
+        return navigate('/income')
+      } else {
+        const message = res.message || ''
+        toast('error', 'Login Failed', message)
+      }
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   // ******** JSX return ******** //
@@ -90,32 +84,34 @@ function LoginPage() {
       <Stack my={5} w='80%' maxW='500px' spacing={5}>
         <LoginTitle>Login</LoginTitle>
 
-        <FormControl isInvalid={emailInvalid}>
+        <FormControl>
           <FormLabel>E-mail:</FormLabel>
           <Input 
             type='email'
             placeholder='Enter your e-mail'
-            value={emailInput}
-            onChange={handleEmailInput}
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
-          {emailInvalid && <FormErrorMessage>E-mail is required</FormErrorMessage>}
         </FormControl>
 
-        <FormControl isInvalid={pwInvalid}>
+        <FormControl>
           <FormLabel>Password:</FormLabel>
           <Input
             type='password'
             placeholder='Enter your password'
-            value={pwInput}
-            onChange={handlePwInput}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
           />
-          {pwInvalid && <FormErrorMessage>Password is required</FormErrorMessage>}
+        </FormControl>
+
+        <FormControl isInvalid={!inputComplete}>
+          <FormErrorMessage><InfoOutlineIcon mr={2}/>Please enter your email & password</FormErrorMessage>
         </FormControl>
 
         <Button
           colorScheme='purple'
-          mt={5}
           onClick={handleLogin}
+          isDisabled={!inputComplete}
         >Login</Button>
 
       </Stack>
