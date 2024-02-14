@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { getRecords } from '../api/record'
 import { toast } from '../utils/helpers'
@@ -57,7 +56,7 @@ function IncomeListPage({ isMobile }) {
       <Navbar isMobile={isMobile} page="income"/>
       <MonthlyHeader isMobile={isMobile} page="income" month={month} switchMonth={switchMonth}/>
       {isMobile ? <RecordList records={records}/> : <RecordTable records={records}/> }
-      <Link to="/income/create"><CreateButton /></Link>
+      <CreateButton link="/income/create"/>
     </Container>
   )
 }

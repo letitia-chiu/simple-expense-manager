@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import AddIcon from '../assets/add.svg?react'
+import { Link } from 'react-router-dom'
 
 const Wrapper = styled.div`
   position: absolute;
@@ -31,12 +32,14 @@ const Wrapper = styled.div`
   }
 `
 
-function CreateButton() {
+function CreateButton({ link }) {
   return (
-    <Wrapper>
-      <AddIcon />
-      <p>Add Record</p>
-    </Wrapper>
+    <Link to={link} style={{width: '40px'}}>
+      <Wrapper>
+        <AddIcon />
+        <p>Add Record</p>
+      </Wrapper>
+    </Link>
   )
 }
 
