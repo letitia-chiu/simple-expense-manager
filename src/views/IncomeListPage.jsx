@@ -1,4 +1,7 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { getRecords } from '../api/record'
+import { toast } from '../utils/helpers'
 
 // Components
 import Container from '../components/Container'
@@ -32,11 +35,31 @@ const dummyIncomes = [
 ]
 
 function IncomeListPage({ isMobile }) {
+  const [records, setRecords] = useState([])
+
+  const getRecordsAsync = async (type, date) => {
+    try {
+      const res = await getRecords(type, date)
+      if (res.success) return setRecords(res.records)
+
+      // Handle error message
+      const message = res.message || ''
+      toast('error', 'Loading Failed', message)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  // ** Get records from API when page first loads
+  useEffect(() => {
+    getRecordsAsync('income', new Date())
+  }, [])
+
   return (
     <Container>
       <Navbar isMobile={isMobile} page="income"/>
       <MonthlyHeader isMobile={isMobile} page="income"/>
-      {isMobile ? <RecordList records={dummyIncomes}/> : <RecordTable records={dummyIncomes}/> }
+      {isMobile ? <RecordList records={records}/> : <RecordTable records={records}/> }
       <Link to="/income/create"><CreateButton /></Link>
     </Container>
   )

@@ -11,6 +11,8 @@ export const login = async (email, password) => {
     if (authToken) {
       localStorage.setItem('authToken', authToken)
       return { success: true, user }
+    } else {
+      return { success: false, message: 'Failed to get authToken'}
     }
   } catch (err) {
     console.error('[Login failed]: ', err)
