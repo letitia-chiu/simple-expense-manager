@@ -38,21 +38,25 @@ const pageTitle = {
   report: "Report"
 }
 
-function MonthlyHeader({ isMobile, page }) {
+function MonthlyHeader({ isMobile, page, month, switchMonth }) {
   return (
     <HeaderWrapper>
       <HeaderContent>
-        <MonthSwitch>
+        <MonthSwitch
+          onClick={() => switchMonth?.('prev')}
+        >
           <PrevIcon />
           {!isMobile && 'prev month'}
         </MonthSwitch>
 
         <HeaderTitleWrapper>
           <HeaderTitle>{pageTitle[page]}</HeaderTitle>
-          <HeaderSubtitle>Jan 2024</HeaderSubtitle>
+          <HeaderSubtitle>{month}</HeaderSubtitle>
         </HeaderTitleWrapper>
 
-        <MonthSwitch>
+        <MonthSwitch
+          onClick={() => switchMonth?.('next')}
+        >
           {!isMobile && 'next month'}
           <NextIcon />
         </MonthSwitch>

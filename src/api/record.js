@@ -14,10 +14,9 @@ export const getRecords = async (type, date) => {
     // Send request
     const config = getAuthConfig()
     const { data } = await axios.get(url, config)
-    console.log(data)
 
     // Return data
-    return { success: true, records: data.records}
+    return { success: true, records: data.records, month: data.period}
   } catch (err) {
     console.error('[Get records failed]:', err)
 
