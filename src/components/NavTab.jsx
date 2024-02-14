@@ -4,6 +4,7 @@ import ExpenseIcon from '../assets/expense.svg?react'
 import ReportIcon from '../assets/report.svg?react'
 import SettingIcon from '../assets/setting.svg?react'
 import CategoryIcon from '../assets/category.svg?react'
+import { Link } from 'react-router-dom'
 
 const Wrapper = styled.div`
   width: 70px;
@@ -50,12 +51,22 @@ const tabTitle = {
   category: 'Categories'
 }
 
+const tabLink = {
+  income: '/income',
+  expense: '/expense',
+  report: '/report',
+  setting: '/setting',
+  category: '/category'
+}
+
 function NavTab({ isActive, type }) {
   return (
-    <Wrapper className={isActive && 'active'}>
-      {tabIcon[type]}
-      <p>{tabTitle[type]}</p>
-    </Wrapper>
+    <Link to={tabLink[type]}>
+      <Wrapper className={isActive && 'active'}>
+        {tabIcon[type]}
+        <p>{tabTitle[type]}</p>
+      </Wrapper>
+    </Link>
   )
 }
 
