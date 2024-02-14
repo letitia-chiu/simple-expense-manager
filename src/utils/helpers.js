@@ -14,3 +14,12 @@ export const toast = (status, title, text) => {
     timer: status === 'success' ? 1500 : 9000
   })
 }
+
+export const getAuthConfig = () => {
+  const token = localStorage.getItem('authToken')
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
+}
