@@ -44,6 +44,11 @@ function HeaderColumn({ column }) {
 }
 
 function RecordRow({ record }) {
+  const handleDelete = (id) => {
+    if (!id) return
+    console.log('Delete record id', id)
+  }
+
   return (
     <Tr>
       <Td>
@@ -71,7 +76,9 @@ function RecordRow({ record }) {
           <Link to={`/edit/${record.id}`}>
             <ActionButton><EditIcon /></ActionButton>
           </Link>
-          <ActionButton><DeleteIcon /></ActionButton>
+          <ActionButton onClick={() => handleDelete(record.id)}>
+            <DeleteIcon />
+          </ActionButton>
         </StyledCell>
       </Td>
     </Tr>
