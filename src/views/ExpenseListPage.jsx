@@ -39,7 +39,7 @@ function ExpenseListPage({ isMobile }) {
       <Navbar isMobile={isMobile} page="expense"/>
       <MonthlyHeader isMobile={isMobile} page="expense"/>
       {isMobile ? <RecordList records={dummyExpenses}/> : <RecordTable records={dummyExpenses}/> }
-      <Link to="/expense/create"><CreateButton /></Link>
+      <CreateButton link="/expense/create"/>
     </Container>
   )
 }

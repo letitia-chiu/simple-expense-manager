@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
 import {
   FormControl, FormLabel, FormErrorMessage,
@@ -21,6 +22,7 @@ const dummyCat = [
 // ******** Main Function ******** //
 
 function RecordForm({ page, record }) {
+  const navigate = useNavigate()
 
   // ** Input useState
   const [dateInput, setDateInput] = useState(() => record?.date || dayjs().format('YYYY-MM-DD'))
@@ -148,6 +150,7 @@ function RecordForm({ page, record }) {
           leftIcon={<CloseIcon />}
           colorScheme='purple'
           variant='outline'
+          onClick={() => navigate(-1)}
         >
           Cancel
         </Button>
