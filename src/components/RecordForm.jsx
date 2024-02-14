@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import dayjs from 'dayjs'
-import styled from '@emotion/styled'
 import {
   FormControl, FormLabel, FormErrorMessage,
   Input, NumberInput, NumberInputField, Select,
@@ -19,27 +18,63 @@ const dummyCat = [
   }
 ]
 
+// ******** Main Function ******** //
+
 function RecordForm({ page, record }) {
+
+  // ** Input useState
   const [dateInput, setDateInput] = useState(() => record?.date || dayjs().format('YYYY-MM-DD'))
+  const [titleInput, setTitleInput] = useState(() => record?.title || '')
+  const [categoryInput, setCategoryInput] = useState(() => record?.categoryId || '')
+  const [amountInput, setAmountInput] = useState(() => record?.amount || '')
+
+  // ** Input validation useState
+  const [titleInvalid, setTitleInvalid] = useState(false)
+  const [amountInvalid, setAmountInvalid] = useState(false)
+  
+  // ** Input change handlers
   const handleDateChange = e => {
     setDateInput(e.target.value)
-  }
+  }  
 
-  const [titleInput, setTitleInput] = useState(() => record?.title || '')
   const handleTitleChange = e => {
     setTitleInput(e.target.value)
-  }
+    setTitleInvalid(false)
+  } 
 
-  const [categoryInput, setCategoryInput] = useState(() => record?.categoryId || '')
   const handleCategoryChange = e => {
     setCategoryInput(e.target.value)
-  }
+  }  
 
-  const [amountInput, setAmountInput] = useState(() => record?.amount || '')
   const handleAmountChange = e => {
     setAmountInput(e.target.value)
+    setAmountInvalid(false)
   }
 
+  // ** Submit function
+  const handleSave = () => {
+    // Validate user input
+    if (!titleInput || titleInput.trim().length === 0) return setTitleInvalid(true)
+    if (!amountInput) return setAmountInvalid(true)
+
+    // Pack user input
+    const payload = {
+      title: titleInput,
+      amount: amountInput,
+      categoryId: categoryInput,
+      date: dateInput,
+      isIncome: page === 'income'
+    }
+
+    // Edit if record exists, else create new record
+    if (record) {
+      console.log('Edit:', payload)
+    } else {
+      console.log('Create:', payload)
+    }
+  }
+
+  // ******** JSX return ******** //
   return (
     <Stack w='90%' my={3} spacing={5}>
       <FormControl>
@@ -51,7 +86,7 @@ function RecordForm({ page, record }) {
         />
       </FormControl>
 
-      <FormControl>
+      <FormControl isInvalid={titleInvalid}>
         <FormLabel>Title</FormLabel>
         <Input
           type='text'
@@ -59,6 +94,7 @@ function RecordForm({ page, record }) {
           value={titleInput}
           onChange={handleTitleChange}
         />
+        {titleInvalid && <FormErrorMessage>Title is required.</FormErrorMessage>}
       </FormControl>
 
       <FormControl>
@@ -74,7 +110,7 @@ function RecordForm({ page, record }) {
         </Select>
       </FormControl>
 
-      <FormControl>
+      <FormControl isInvalid={amountInvalid}>
         <FormLabel>Amount</FormLabel>
         <NumberInput
           value={amountInput}
@@ -84,13 +120,23 @@ function RecordForm({ page, record }) {
             onChange={handleAmountChange}
           />
         </NumberInput>
+        {amountInvalid && <FormErrorMessage>Amount is required.</FormErrorMessage>}
       </FormControl>
 
       <ButtonGroup justifyContent='end' spacing={5} mt={5}>
-        <Button leftIcon={<CheckIcon />} colorScheme='purple' variant='solid'>
+        <Button 
+          leftIcon={<CheckIcon />}
+          colorScheme='purple'
+          variant='solid'
+          onClick={handleSave}
+        >
           Save
         </Button>
-        <Button leftIcon={<CloseIcon />} colorScheme='purple' variant='outline'>
+        <Button 
+          leftIcon={<CloseIcon />}
+          colorScheme='purple'
+          variant='outline'
+        >
           Cancel
         </Button>
       </ButtonGroup>
