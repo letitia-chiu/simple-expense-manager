@@ -57,7 +57,7 @@ function LoginPage() {
         toast('error', 'Login Failed', message)
       }
     } catch (err) {
-      console.error(err)
+      toast('error', err)
     }
   }
 

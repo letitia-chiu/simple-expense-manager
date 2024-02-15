@@ -99,7 +99,7 @@ function RecordForm({ page, recordId }) {
           toast('error', 'Loading Failed', message)
         }
       } catch (err) {
-        console.error(err)
+        toast('error', err)
       }
     }
     if (recordId) {

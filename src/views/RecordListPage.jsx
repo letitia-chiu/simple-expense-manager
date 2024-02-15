@@ -29,7 +29,7 @@ function RecordListPage({ type, isMobile }) {
       const message = res.message || ''
       toast('error', 'Loading Failed', message)
     } catch (err) {
-      console.error(err)
+      toast('error', err)
     }
   }
 
