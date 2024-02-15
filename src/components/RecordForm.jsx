@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getRecord, postRecord } from '../api/record'
+import { getRecord, postRecord, patchRecord } from '../api/record'
 import { getCategories } from '../api/category'
 import { toast } from '../utils/helpers'
 import dayjs from 'dayjs'
@@ -65,7 +65,7 @@ function RecordForm({ type, recordId }) {
     }
   }
 
-  const postRecordAsync = async (payload) => {
+  const createRecord = async (payload) => {
     try {
       payload.isIncome = type === 'income'
       const res = await postRecord(payload)
@@ -75,7 +75,23 @@ function RecordForm({ type, recordId }) {
       } else {
         // Handle error message
         const message = res.message || ''
-        toast('error', 'Loading Failed', message)
+        toast('error', 'Failed to add record', message)
+      }
+    } catch (err) {
+      toast('error', err)
+    }
+  }
+
+  const editRecord = async (payload) => {
+    try {
+      const res = await patchRecord(recordId, payload)
+      if (res.success) {
+        toast('success', 'Edit record successfully')
+        return navigate(`/${type}`)
+      } else {
+        // Handle error message
+        const message = res.message || ''
+        toast('error', 'Failed to edit record', message)
       }
     } catch (err) {
       toast('error', err)
@@ -92,9 +108,9 @@ function RecordForm({ type, recordId }) {
 
     // Edit if recordId exists, else create new record
     if (recordId) {
-      console.log('Edit:', payload)
+      editRecord(payload)
     } else {
-      postRecordAsync(payload)
+      createRecord(payload)
     }
   }
 
