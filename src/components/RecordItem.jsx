@@ -52,7 +52,7 @@ function RecordItem({ record }) {
       <RecordDate>{dayjs(record.date).format('M/D')}</RecordDate>
       <RecordMain>
         <RecordTitle>{record.title}</RecordTitle>
-        <RecordCategory>{record.Category.name}</RecordCategory>
+        <RecordCategory>{record.Category?.name || '(Uncategorized)'}</RecordCategory>
       </RecordMain>
       <RecordAmount>{record.amount}</RecordAmount>
     </RecordWrapper>

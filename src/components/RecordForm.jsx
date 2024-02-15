@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getRecord, postRecord, patchRecord } from '../api/record'
+import { getRecord, postRecord, patchRecord, deleteRecord } from '../api/record'
 import { getCategories } from '../api/category'
-import { toast } from '../utils/helpers'
+import { toast, handleDelete } from '../utils/helpers'
 import dayjs from 'dayjs'
 import {
   FormControl, FormLabel, FormErrorMessage,
@@ -98,6 +98,22 @@ function RecordForm({ type, recordId }) {
     }
   }
 
+  const deleteRecordAsync = async () => {
+    try {
+      const res = await deleteRecord(recordId)
+      if (res.success) {
+        toast('success', 'Delete record successfully')
+        return navigate(`/${type}`)
+      } else {
+        // Handle error message
+        const message = res.message || ''
+        toast('error', 'Failed to delete record', message)
+      }
+    } catch (err) {
+      toast('error', err)
+    }
+  }
+
   // ** Submit function
   const handleSave = () => {
     // Validate user input
@@ -112,11 +128,6 @@ function RecordForm({ type, recordId }) {
     } else {
       createRecord(payload)
     }
-  }
-
-  // ** Delete function
-  const handleDelete = () => {
-    console.log('Delete')
   }
 
   // ** Get data from API when page first loads
@@ -184,7 +195,7 @@ function RecordForm({ type, recordId }) {
           aria-label='Delete'
           icon={<DeleteIcon />}
           mr={5}
-          onClick={handleDelete}
+          onClick={() => handleDelete?.(recordId, deleteRecordAsync)}
         />}
         <Button 
           leftIcon={<CheckIcon />}

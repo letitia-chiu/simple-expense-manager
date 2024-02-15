@@ -78,3 +78,21 @@ export const patchRecord = async (id, payload) => {
     return { success: false, message}
   }
 }
+
+export const deleteRecord = async (id) => {
+  try {
+    // Send request
+    const url = `${baseUrl}/${id}`
+    const config = getAuthConfig()
+    const { data } = await axios.delete(url, config)
+
+    // Return data
+    return { success: true, record: data.record}
+  } catch (err) {
+    console.error('[Delete record failed]:', err)
+
+    // Return error message
+    const message = err.response.data.message
+    return { success: false, message}
+  }
+}

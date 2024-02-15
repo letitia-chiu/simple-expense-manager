@@ -1,17 +1,13 @@
-import { Link } from 'react-router-dom'
-import styled from '@emotion/styled'
+import { Link, useNavigate } from 'react-router-dom'
+import { deleteRecord } from '../api/record'
+import { toast, handleDelete } from '../utils/helpers'
 import dayjs from 'dayjs'
+import styled from '@emotion/styled'
 import StyledCell from './StyledCell'
 import EditIcon from '../assets/edit.svg?react'
 import DeleteIcon from '../assets/delete.svg?react'
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
+import { 
+  Table, Thead, Tbody, Tr, Th, Td, TableContainer 
 } from '@chakra-ui/react'
 
 const Wrapper = styled.div`
@@ -20,7 +16,6 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
 `
-
 const ActionButton = styled.div`
   svg {
     width: 20px;
@@ -44,9 +39,21 @@ function HeaderColumn({ column }) {
 }
 
 function RecordRow({ record }) {
-  const handleDelete = (id) => {
-    if (!id) return
-    console.log('Delete record id', id)
+  const navigate = useNavigate()
+  const deleteRecordAsync = async () => {
+    try {
+      const res = await deleteRecord(recordId)
+      if (res.success) {
+        toast('success', 'Delete record successfully')
+        return navigate(`/${type}`)
+      } else {
+        // Handle error message
+        const message = res.message || ''
+        toast('error', 'Failed to delete record', message)
+      }
+    } catch (err) {
+      toast('error', err)
+    }
   }
 
   return (
@@ -63,7 +70,7 @@ function RecordRow({ record }) {
       </Td>
       <Td>
         <StyledCell justify="center">
-          {record.Category.name}
+          {record.Category?.name || '(Uncategorized)'}
           </StyledCell>
       </Td>
       <Td>
@@ -76,7 +83,9 @@ function RecordRow({ record }) {
           <Link to={`/${record.isIncome ? 'income' : 'expense'}/${record.id}/edit`}>
             <ActionButton><EditIcon /></ActionButton>
           </Link>
-          <ActionButton onClick={() => handleDelete(record.id)}>
+          <ActionButton 
+            onClick={() => handleDelete?.(record.id, deleteRecordAsync)}
+          >
             <DeleteIcon />
           </ActionButton>
         </StyledCell>
@@ -85,30 +94,19 @@ function RecordRow({ record }) {
   )
 }
 
-const columns = [
-  {
-    name: 'Date',
-    justify: 'center'
-  },
-  {
-    name: 'Title',
-    width: '15vw'
-  },
-  {
-    name: 'Category',
-    justify: 'center'
-  },
-  {
-    name: 'Amount',
-    justify: 'center'
-  },
-  {
-    name: 'Actions',
-    justify: 'center'
-  }
-]
+// ******** Main Function ******** //
 
 function RecordTable({ records }) {
+  // ** Define columns
+  const columns = [
+    { name: 'Date', justify: 'center' },
+    { name: 'Title', width: '15vw' },
+    { name: 'Category', justify: 'center' },
+    { name: 'Amount', justify: 'center' },
+    { name: 'Actions', justify: 'center' }
+  ]
+
+  // ******** JSX return ******** //
   return (
     <Wrapper>
       <TableContainer w="100%" maxWidth="960px">

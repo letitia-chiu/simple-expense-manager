@@ -23,3 +23,20 @@ export const getAuthConfig = () => {
     }
   }
 }
+
+export const handleDelete = async (id, cb) => {
+  if (!id) return
+  Swal.fire({
+    title: 'Delete the record?',
+    text: 'You will not be able to recover it!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      cb(id)
+    }
+  })
+}
