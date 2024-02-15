@@ -40,7 +40,7 @@ function App() {
             />
             <Route
               path="/income/create"
-              element={<CreatePage isMobile={isMobile} page="income" />}
+              element={<CreatePage isMobile={isMobile} type="income" />}
             />
             <Route
               path="/income/:id/edit"
@@ -52,7 +52,7 @@ function App() {
             />
             <Route
               path="/expense/create"
-              element={<CreatePage isMobile={isMobile} page="expense" />}
+              element={<CreatePage isMobile={isMobile} type="expense" />}
             />
             <Route
               path="/expense/:id/edit"

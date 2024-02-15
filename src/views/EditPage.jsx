@@ -11,7 +11,7 @@ function EditPage({ isMobile, type }) {
 
   return (
     <Container>
-      <Navbar isMobile={isMobile} />
+      <Navbar isMobile={isMobile} page={type} />
       <PlainHeader isEdit={true} />
       <RecordForm type={type} recordId={id} />
     </Container>

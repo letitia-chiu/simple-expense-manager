@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getRecord } from '../api/record'
+import { getCategories } from '../api/category'
 import { toast } from '../utils/helpers'
 import dayjs from 'dayjs'
 import {
@@ -8,18 +9,7 @@ import {
   Input, NumberInput, NumberInputField, Select,
   Button, ButtonGroup, IconButton, Stack
 } from '@chakra-ui/react'
-import { CheckIcon, CloseIcon, DeleteIcon } from '@chakra-ui/icons'
-
-const dummyCat = [
-  {
-    id: 6,
-    name: 'Salary'
-  },
-  {
-    id: 7,
-    name: 'Bonus'
-  }
-]
+import { CheckIcon, CloseIcon, DeleteIcon, InfoOutlineIcon } from '@chakra-ui/icons'
 
 // ******** Main Function ******** //
 
@@ -27,32 +17,52 @@ function RecordForm({ type, recordId }) {
   const navigate = useNavigate()
 
   // ** Input useState
-  const [dateInput, setDateInput] = useState(dayjs().format('YYYY-MM-DD'))
-  const [titleInput, setTitleInput] = useState('')
-  const [categoryInput, setCategoryInput] = useState('')
-  const [amountInput, setAmountInput] = useState('')
+  const [categories, setCategories] = useState([])
+  const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'))
+  const [title, setTitle] = useState('')
+  const [category, setCategory] = useState('')
+  const [amount, setAmount] = useState('')
+  const inputComplete = title && amount
 
-  // ** Input validation useState
-  const [titleInvalid, setTitleInvalid] = useState(false)
-  const [amountInvalid, setAmountInvalid] = useState(false)
+  // ** Async functions
+  const getRecordAsync = async () => {
+    try {
+      const res = await getRecord(recordId)
+      if (res.success) {
+        // Check if income/expense matched
+        const recordType = res.record.isIncome ? 'income' : 'expense'
+        if (recordType !== type) {
+          toast('error', 'Route error', `This record is not ${type}`)
+          return navigate(`/${recordType}`)
+        }
+
+        // Set form value
+        setDate(res.record.date)
+        setTitle(res.record.title)
+        setAmount(res.record.amount)
+        setCategory(res.record.categoryId)
+      } else {
+        // Handle error message
+        const message = res.message || ''
+        toast('error', 'Loading Failed', message)
+        navigate(`/${type}`)
+      }
+    } catch (err) {
+      toast('error', err)
+    }
+  }
   
-  // ** Input change handlers
-  const handleDateChange = e => {
-    setDateInput(e.target.value)
-  }  
+  const getCategoriesAsync = async () => {
+    try {
+      const res = await getCategories(type)
+      if (res.success) return setCategories(res.categories)
 
-  const handleTitleChange = e => {
-    setTitleInput(e.target.value)
-    setTitleInvalid(false)
-  } 
-
-  const handleCategoryChange = e => {
-    setCategoryInput(e.target.value)
-  }  
-
-  const handleAmountChange = e => {
-    setAmountInput(e.target.value)
-    setAmountInvalid(false)
+      // Handle error message
+      const message = res.message || ''
+      toast('error', 'Loading Failed', message)
+    } catch (err) {
+      toast('error', err)
+    }
   }
 
   // ** Submit function
@@ -85,27 +95,12 @@ function RecordForm({ type, recordId }) {
 
   // ** Get data from API when page first loads
   useEffect(() => {
-    const getRecordAsync = async () => {
-      try {
-        const res = await getRecord(recordId)
-        if (res.success) {
-          setDateInput(res.record.date)
-          setTitleInput(res.record.title)
-          setAmountInput(res.record.amount)
-          setCategoryInput(res.record.categoryId)
-        } else {
-          // Handle error message
-          const message = res.message || ''
-          toast('error', 'Loading Failed', message)
-          navigate('/income')
-        }
-      } catch (err) {
-        toast('error', err)
-      }
-    }
-    if (recordId) {
-      getRecordAsync()
-    }
+    // Get categories from API
+    getCategoriesAsync()
+
+    // Get record data if recordId exists
+    if (recordId) getRecordAsync()
+
   }, [recordId])
 
   // ******** JSX return ******** //
@@ -115,46 +110,46 @@ function RecordForm({ type, recordId }) {
         <FormLabel>Date</FormLabel>
         <Input
           type='date'
-          value={dateInput}
-          onChange={handleDateChange}
+          value={date}
+          onChange={e => setDate(e.target.value)}
         />
       </FormControl>
 
-      <FormControl isInvalid={titleInvalid}>
+      <FormControl>
         <FormLabel>Title</FormLabel>
         <Input
           type='text'
           placeholder='Enter title'
-          value={titleInput}
-          onChange={handleTitleChange}
+          value={title}
+          onChange={e => setTitle(e.target.value)}
         />
-        {titleInvalid && <FormErrorMessage>Title is required.</FormErrorMessage>}
       </FormControl>
 
       <FormControl>
         <FormLabel>Category</FormLabel>
         <Select
           placeholder='Select category'
-          value={categoryInput}
-          onChange={handleCategoryChange}
+          value={category}
+          onChange={e => setCategory(e.target.value)}
         >
-          {dummyCat.map(c => (
+          {categories.map(c => (
             <option key={c.id} value={c.id}>{c.name}</option>
           ))}
         </Select>
       </FormControl>
 
-      <FormControl isInvalid={amountInvalid}>
+      <FormControl>
         <FormLabel>Amount</FormLabel>
-        <NumberInput
-          value={amountInput}
-        >
+        <NumberInput value={amount}>
           <NumberInputField
             placeholder='Enter amount'
-            onChange={handleAmountChange}
+            onChange={e => setAmount(e.target.value)}
           />
         </NumberInput>
-        {amountInvalid && <FormErrorMessage>Amount is required.</FormErrorMessage>}
+      </FormControl>
+
+      <FormControl isInvalid={!inputComplete}>
+        <FormErrorMessage><InfoOutlineIcon mr={2}/>Title & amount is required</FormErrorMessage>
       </FormControl>
 
       <ButtonGroup justifyContent='end' spacing={5} mt={5}>
@@ -170,6 +165,7 @@ function RecordForm({ type, recordId }) {
           colorScheme='purple'
           variant='solid'
           onClick={handleSave}
+          isDisabled={!inputComplete}
         >
           Save
         </Button>
