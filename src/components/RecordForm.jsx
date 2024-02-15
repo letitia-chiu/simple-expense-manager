@@ -98,9 +98,9 @@ function RecordForm({ type, recordId }) {
     }
   }
 
-  const deleteRecordAsync = async () => {
+  const deleteRecordAsync = async (id) => {
     try {
-      const res = await deleteRecord(recordId)
+      const res = await deleteRecord(id)
       if (res.success) {
         toast('success', 'Delete record successfully')
         return navigate(`/${type}`)

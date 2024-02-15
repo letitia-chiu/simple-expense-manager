@@ -40,12 +40,13 @@ function HeaderColumn({ column }) {
 
 function RecordRow({ record }) {
   const navigate = useNavigate()
-  const deleteRecordAsync = async () => {
+  const deleteRecordAsync = async (id) => {
     try {
-      const res = await deleteRecord(recordId)
+      const res = await deleteRecord(id)
       if (res.success) {
+        const page = record?.isIncome ? '/income' : '/expense'
         toast('success', 'Delete record successfully')
-        return navigate(`/${type}`)
+        return navigate(page)
       } else {
         // Handle error message
         const message = res.message || ''
