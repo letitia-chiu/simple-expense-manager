@@ -8,6 +8,7 @@ import Container from '../components/Container'
 import Navbar from '../components/Navbar'
 import PlainHeader from '../components/PlainHeader'
 import CategoryTable from '../components/CategoryTable'
+import CategoryList from '../components/CategoryList'
 
 const dummyCats = [
   { id: 1, name: 'Salary' },
@@ -15,21 +16,31 @@ const dummyCats = [
 ]
 
 function CategoryPage ({ isMobile }) {
+  const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
+  const [tab, setTab] = useState('income')
+
+  // ** Auth Check
+  useEffect(() => {
+    if (!isAuthenticated) navigate('/login')
+  }, [navigate, isAuthenticated])
+
   return (
     <Container>
+      {console.log(tab)}
       <Navbar isMobile={isMobile} page="category"/>
       <PlainHeader page="category"/>
       <Tabs isFitted variant='soft-rounded' colorScheme='purple' w='95%' maxW='960px'>
         <TabList mb={1} mt={5}>
-          <Tab>Income</Tab>
-          <Tab>Expense</Tab>
+          <Tab onClick={() => setTab('income')}>Income</Tab>
+          <Tab onClick={() => setTab('expense')}>Expense</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
-            <CategoryTable categories={dummyCats}/>
+            {isMobile ? <CategoryList categories={dummyCats}/> : <CategoryTable categories={dummyCats}/>}
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            {isMobile ? <CategoryList categories={dummyCats}/> : <CategoryTable categories={dummyCats}/>}
           </TabPanel>
         </TabPanels>
       </Tabs>
