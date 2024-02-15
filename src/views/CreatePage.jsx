@@ -10,7 +10,7 @@ import RecordForm from '../components/RecordForm'
 
 function CreatePage({ isMobile, type }) {
   const navigate = useNavigate()
-  const { isAuthenticated, currentUser } = useAuth()
+  const { isAuthenticated } = useAuth()
 
   // ** Auth Check
   useEffect(() => {

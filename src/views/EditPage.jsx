@@ -11,7 +11,7 @@ import RecordForm from '../components/RecordForm'
 function EditPage({ isMobile, type }) {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { isAuthenticated, currentUser } = useAuth()
+  const { isAuthenticated } = useAuth()
 
   // ** Auth Check
   useEffect(() => {

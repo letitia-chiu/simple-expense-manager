@@ -16,7 +16,7 @@ import CreateButton from '../components/CreateButton'
 
 function RecordListPage({ type, isMobile }) {
   const navigate = useNavigate()
-  const { isAuthenticated, currentUser } = useAuth()
+  const { isAuthenticated } = useAuth()
   const [records, setRecords] = useState([])
   const [month, setMonth] = useState(null)
 

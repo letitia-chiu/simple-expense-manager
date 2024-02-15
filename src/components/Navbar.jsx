@@ -3,6 +3,7 @@ import LogoutIcon from '../assets/logout.svg?react'
 import NavTab from './NavTab'
 import { useAuth } from '../utils/AuthContext'
 import { toast } from '../utils/helpers'
+import Swal from 'sweetalert2'
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.foregroundColor};
@@ -74,10 +75,22 @@ const UserLogout = styled.div`
 `
 
 function Navbar({ isMobile, page }) {
-  const { logout } = useAuth()
+  const { logout, currentUser } = useAuth()
   const handleLogout = () => {
-    logout()
-    toast('success', "You've logout!")
+    Swal.fire({
+      title: 'Logout?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Logout'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout()
+        toast('success', "You've logout!")
+      }
+    })
+    
   }
 
   return (
@@ -89,9 +102,9 @@ function Navbar({ isMobile, page }) {
         <NavTab isActive={page === 'report'} type="report"/>
         {isMobile ? <NavTab isActive={page === 'setting'} type="setting"/> : <NavTab isActive={page === 'category'} type="category"/> }
       </Tabs>
-      <UserLogout>
-        <LogoutIcon onClick={() => handleLogout()}/>
-        <p>Hi, user1</p>
+      <UserLogout onClick={() => handleLogout()}>
+        <LogoutIcon />
+        <p>{currentUser && `Hi, ${currentUser.name}`}</p>
       </UserLogout>
     </Wrapper>
   )
