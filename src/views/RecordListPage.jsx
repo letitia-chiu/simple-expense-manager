@@ -66,7 +66,7 @@ function RecordListPage({ type, isMobile }) {
       <Navbar isMobile={isMobile} page={type}/>
       <MonthlyHeader isMobile={isMobile} page={type} month={month} switchMonth={switchMonth}/>
       {isMobile ? <RecordList records={records}/> : <RecordTable records={records}/> }
-      <CreateButton link={`/${type}/create`}/>
+      <CreateButton link={`/${type}/create`} title="Add Record"/>
     </Container>
   )
 }

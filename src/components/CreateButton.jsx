@@ -32,12 +32,12 @@ const Wrapper = styled.div`
   }
 `
 
-function CreateButton({ link }) {
+function CreateButton({ link, title }) {
   return (
     <Link to={link} style={{width: '40px'}}>
       <Wrapper>
         <AddIcon />
-        <p>Add Record</p>
+        <p>{title || 'Add'}</p>
       </Wrapper>
     </Link>
   )

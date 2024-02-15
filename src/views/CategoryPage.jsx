@@ -9,6 +9,7 @@ import Navbar from '../components/Navbar'
 import PlainHeader from '../components/PlainHeader'
 import CategoryTable from '../components/CategoryTable'
 import CategoryList from '../components/CategoryList'
+import CreateButton from '../components/CreateButton'
 
 const dummyCats = [
   { id: 1, name: 'Salary' },
@@ -44,6 +45,7 @@ function CategoryPage ({ isMobile }) {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <CreateButton link="#" title="Add Category"/>
     </Container>
   )
 }
