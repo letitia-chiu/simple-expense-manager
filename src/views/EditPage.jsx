@@ -1,4 +1,6 @@
-import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useAuth } from '../utils/AuthContext'
 
 // Components
 import Container from '../components/Container'
@@ -8,6 +10,13 @@ import RecordForm from '../components/RecordForm'
 
 function EditPage({ isMobile, type }) {
   const { id } = useParams()
+  const navigate = useNavigate()
+  const { isAuthenticated, currentUser } = useAuth()
+
+  // ** Auth Check
+  useEffect(() => {
+    if (!isAuthenticated) navigate('/login')
+  }, [navigate, isAuthenticated])
 
   return (
     <Container>
