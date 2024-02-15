@@ -41,3 +41,38 @@ export const getCategory = async (id) => {
     return { success: false, message}
   }
 }
+
+export const postCategory = async (payload) => {
+  try {
+    // Send request
+    const config = getAuthConfig()
+    const { data } = await axios.post(baseUrl, payload, config)
+
+    // Return data
+    return { success: true, category: data.category}
+  } catch (err) {
+    console.error('[Post category failed]:', err)
+
+    // Return error message
+    const message = err.response.data.message
+    return { success: false, message}
+  }
+}
+
+export const patchCategory = async (id, payload) => {
+  try {
+    // Send request
+    const url = `${baseUrl}/${id}`
+    const config = getAuthConfig()
+    const { data } = await axios.patch(url, payload, config)
+
+    // Return data
+    return { success: true, category: data.category}
+  } catch (err) {
+    console.error('[Patch category failed]:', err)
+
+    // Return error message
+    const message = err.response.data.message
+    return { success: false, message}
+  }
+}

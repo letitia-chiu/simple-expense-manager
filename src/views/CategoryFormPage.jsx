@@ -10,6 +10,7 @@ import CategoryForm from '../components/CategoryForm'
 
 function CategoryCreatePage({ isMobile }) {
   const { id } = useParams()
+  const page = id ? 'editCategory' : 'createCategory'
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
 
@@ -21,7 +22,7 @@ function CategoryCreatePage({ isMobile }) {
   return (
     <Container>
       <Navbar isMobile={isMobile} page="category"/>
-      <PlainHeader page="createCategory"/>
+      <PlainHeader page={page}/>
       <CategoryForm categoryId={id && id !== 'create' ? id : null}/>
     </Container>
   )

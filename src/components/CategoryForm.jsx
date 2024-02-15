@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getCategory } from '../api/category'
+import { getCategory, postCategory, patchCategory } from '../api/category'
 import { toast, handleDelete } from '../utils/helpers'
 import {
   FormControl, FormLabel, FormErrorMessage,
@@ -34,7 +34,38 @@ function CategoryForm({ categoryId }) {
       toast('error', err)
     }
   }
-  
+
+  const createCategory = async (payload) => {
+    try {
+      const res = await postCategory(payload)
+      if (res.success) {
+        toast('success', 'Add category successfully')
+        return navigate('/category')
+      } else {
+        // Handle error message
+        const message = res.message || ''
+        toast('error', 'Failed to add category', message)
+      }
+    } catch (err) {
+      toast('error', err)
+    }
+  }
+
+  const editCategory = async (payload) => {
+    try {
+      const res = await patchCategory(categoryId, payload)
+      if (res.success) {
+        toast('success', 'Edit category successfully')
+        return navigate('/category')
+      } else {
+        // Handle error message
+        const message = res.message || ''
+        toast('error', 'Failed to edit category', message)
+      }
+    } catch (err) {
+      toast('error', err)
+    }
+  }
 
   // ** Submit function
   const handleSave = () => {
@@ -46,9 +77,9 @@ function CategoryForm({ categoryId }) {
 
     // Edit if categoryId exists, else create new category
     if (categoryId) {
-      console.log('edit:', payload)
+      editCategory(payload)
     } else {
-      console.log('create:', payload)
+      createCategory(payload)
     }
   }
 
@@ -72,7 +103,11 @@ function CategoryForm({ categoryId }) {
 
       <FormControl>
         <FormLabel>Type</FormLabel>
-        <RadioGroup onChange={setValue} value={value}>
+        <RadioGroup 
+          onChange={setValue}
+          value={value}
+          isDisabled={categoryId && true}
+        >
           <Stack direction='row' spacing={8} mt={3}>
             <Radio size='lg' value='0'>Expense</Radio>
             <Radio size='lg' value='1'>Income</Radio>
