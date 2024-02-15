@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../utils/AuthContext'
+import { getCategories } from '../api/category'
+import { toast } from '../utils/helpers'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 
 // Components
@@ -18,17 +20,36 @@ const dummyCats = [
 
 function CategoryPage ({ isMobile }) {
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, isLoading } = useAuth()
   const [tab, setTab] = useState('income')
+  const [categories, setCategories] = useState([])
+
+  // ** Async function
+  const getCategoriesAsync = async (type) => {
+    try {
+      const res = await getCategories(type)
+      if (res.success) return setCategories(res.categories)
+
+      // Handle error message
+      const message = res.message || ''
+      toast('error', 'Loading Failed', message)
+    } catch (err) {
+      toast('error', err)
+    }
+  }
 
   // ** Auth Check
   useEffect(() => {
     if (!isAuthenticated) navigate('/login')
   }, [navigate, isAuthenticated])
 
+  // ** Get data from API when page first loads
+  useEffect(() => {
+    getCategoriesAsync(tab)
+  }, [tab])
+
   return (
     <Container>
-      {console.log(tab)}
       <Navbar isMobile={isMobile} page="category"/>
       <PlainHeader page="category"/>
       <Tabs isFitted variant='soft-rounded' colorScheme='purple' w='95%' maxW='960px'>
@@ -38,10 +59,10 @@ function CategoryPage ({ isMobile }) {
         </TabList>
         <TabPanels>
           <TabPanel>
-            {isMobile ? <CategoryList categories={dummyCats}/> : <CategoryTable categories={dummyCats}/>}
+            {isMobile ? <CategoryList categories={categories}/> : <CategoryTable categories={categories}/>}
           </TabPanel>
           <TabPanel>
-            {isMobile ? <CategoryList categories={dummyCats}/> : <CategoryTable categories={dummyCats}/>}
+            {isMobile ? <CategoryList categories={categories}/> : <CategoryTable categories={categories}/>}
           </TabPanel>
         </TabPanels>
       </Tabs>
