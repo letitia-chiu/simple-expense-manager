@@ -23,7 +23,7 @@ const dummyCat = [
 
 // ******** Main Function ******** //
 
-function RecordForm({ page, recordId }) {
+function RecordForm({ type, recordId }) {
   const navigate = useNavigate()
 
   // ** Input useState
@@ -67,7 +67,7 @@ function RecordForm({ page, recordId }) {
       amount: amountInput,
       categoryId: categoryInput,
       date: dateInput,
-      isIncome: page === 'income'
+      isIncome: type === 'income' // 需確認，編輯時要從record抓
     }
 
     // Edit if record exists, else create new record
@@ -97,6 +97,7 @@ function RecordForm({ page, recordId }) {
           // Handle error message
           const message = res.message || ''
           toast('error', 'Loading Failed', message)
+          navigate('/income')
         }
       } catch (err) {
         toast('error', err)

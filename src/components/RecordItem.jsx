@@ -47,7 +47,7 @@ const RecordAmount = styled.div`
 
 function RecordItem({ record }) {
   return (
-    <Link to={`/edit/${record.id}`}>
+    <Link to={`/${record.isIncome ? 'income' : 'expense'}/${record.id}/edit`}>
     <RecordWrapper>
       <RecordDate>{dayjs(record.date).format('M/D')}</RecordDate>
       <RecordMain>

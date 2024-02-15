@@ -6,14 +6,14 @@ import Navbar from '../components/Navbar'
 import PlainHeader from '../components/PlainHeader'
 import RecordForm from '../components/RecordForm'
 
-function EditPage({ isMobile, page }) {
+function EditPage({ isMobile, type }) {
   const { id } = useParams()
 
   return (
     <Container>
-      <Navbar isMobile={isMobile} page={page}/>
-      <PlainHeader isEdit={true}/>
-      <RecordForm page={page} recordId={id}/>
+      <Navbar isMobile={isMobile} />
+      <PlainHeader isEdit={true} />
+      <RecordForm type={type} recordId={id} />
     </Container>
   )
 }

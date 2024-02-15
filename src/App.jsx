@@ -43,6 +43,10 @@ function App() {
               element={<CreatePage isMobile={isMobile} page="income" />}
             />
             <Route
+              path="/income/:id/edit"
+              element={<EditPage isMobile={isMobile} type="income" />}
+            />
+            <Route
               path="/income"
               element={<RecordListPage isMobile={isMobile} type="income" />}
             />
@@ -51,12 +55,12 @@ function App() {
               element={<CreatePage isMobile={isMobile} page="expense" />}
             />
             <Route
-              path="/expense"
-              element={<RecordListPage isMobile={isMobile} type="expense" />}
+              path="/expense/:id/edit"
+              element={<EditPage isMobile={isMobile} type="expense" />}
             />
             <Route
-              path="/edit/:id"
-              element={<EditPage isMobile={isMobile} />}
+              path="/expense"
+              element={<RecordListPage isMobile={isMobile} type="expense" />}
             />
             <Route
               path="*"

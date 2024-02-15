@@ -73,7 +73,7 @@ function RecordRow({ record }) {
       </Td>
       <Td>
         <StyledCell justify="space-around">
-          <Link to={`/edit/${record.id}`}>
+          <Link to={`/${record.isIncome ? 'income' : 'expense'}/${record.id}/edit`}>
             <ActionButton><EditIcon /></ActionButton>
           </Link>
           <ActionButton onClick={() => handleDelete(record.id)}>
