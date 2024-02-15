@@ -50,6 +50,12 @@ export const AuthProvider = ({ children }) => {
             setIsAuthenticated(false)
           }
           return res
+        },
+
+        logout: () => {
+          localStorage.removeItem('authToken')
+          setUser(null)
+          setIsAuthenticated(false)
         }
       }}    
     >

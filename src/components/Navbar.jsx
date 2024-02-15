@@ -1,6 +1,8 @@
 import styled from '@emotion/styled'
 import LogoutIcon from '../assets/logout.svg?react'
 import NavTab from './NavTab'
+import { useAuth } from '../utils/AuthContext'
+import { toast } from '../utils/helpers'
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.foregroundColor};
@@ -72,6 +74,12 @@ const UserLogout = styled.div`
 `
 
 function Navbar({ isMobile, page }) {
+  const { logout } = useAuth()
+  const handleLogout = () => {
+    logout()
+    toast('success', "You've logout!")
+  }
+
   return (
     <Wrapper>
       <Navbrand>Simple Expense Manager</Navbrand>
@@ -82,7 +90,7 @@ function Navbar({ isMobile, page }) {
         {isMobile ? <NavTab isActive={page === 'setting'} type="setting"/> : <NavTab isActive={page === 'category'} type="category"/> }
       </Tabs>
       <UserLogout>
-        <LogoutIcon />
+        <LogoutIcon onClick={() => handleLogout()}/>
         <p>Hi, user1</p>
       </UserLogout>
     </Wrapper>
