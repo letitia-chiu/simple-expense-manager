@@ -66,7 +66,7 @@ function CategoryPage ({ isMobile }) {
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <CreateButton link="#" title="Add Category"/>
+      <CreateButton link="/category/create" title="Add Category"/>
     </Container>
   )
 }

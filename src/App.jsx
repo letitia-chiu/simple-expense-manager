@@ -10,6 +10,7 @@ import CreatePage from './views/CreatePage'
 import EditPage from './views/EditPage'
 import LoginPage from './views/LoginPage'
 import CategoryPage from './views/CategoryPage'
+import CategoryCreatePage from './views/CategoryCreatePage'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
@@ -62,6 +63,10 @@ function App() {
               <Route
                 path="/expense"
                 element={<RecordListPage isMobile={isMobile} type="expense" />}
+              />
+              <Route
+                path="/category/create"
+                element={<CategoryCreatePage isMobile={isMobile} />}
               />
               <Route
                 path="/category"

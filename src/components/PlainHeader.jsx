@@ -8,7 +8,9 @@ import {
 const pageTitle = {
   income: "Add New Income",
   expense: "Add New Expense",
-  category: "Categories"
+  category: "Categories",
+  createCategory: "Add New Category",
+  editCategory: "Edit Category"
 }
 
 function PlainHeader({ page, isEdit }) {
