@@ -11,18 +11,16 @@ import LoginPage from './views/LoginPage'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
-
+  
+  // ** Screen size check
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.innerWidth < 960)
     }
-
     // Initial check screen size
     checkScreenSize()
-
     // Set up event listener
     window.addEventListener('resize', checkScreenSize)
-
     // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener('resize', checkScreenSize)

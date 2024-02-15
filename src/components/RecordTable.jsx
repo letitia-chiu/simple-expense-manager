@@ -1,4 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { deleteRecord } from '../api/record'
 import { toast, handleDelete } from '../utils/helpers'
 import dayjs from 'dayjs'
@@ -39,14 +40,14 @@ function HeaderColumn({ column }) {
 }
 
 function RecordRow({ record }) {
-  const navigate = useNavigate()
+  const [isDeleted, setIsDeleted] = useState(false)
+
   const deleteRecordAsync = async (id) => {
     try {
       const res = await deleteRecord(id)
       if (res.success) {
-        const page = record?.isIncome ? '/income' : '/expense'
+        setIsDeleted(true)
         toast('success', 'Delete record successfully')
-        return navigate(page)
       } else {
         // Handle error message
         const message = res.message || ''
@@ -56,6 +57,9 @@ function RecordRow({ record }) {
       toast('error', err)
     }
   }
+
+  // ** If row has been deleted, return nothing
+  if (isDeleted) return
 
   return (
     <Tr>
