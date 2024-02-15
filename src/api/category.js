@@ -76,3 +76,21 @@ export const patchCategory = async (id, payload) => {
     return { success: false, message}
   }
 }
+
+export const deleteCategory = async (id) => {
+  try {
+    // Send request
+    const url = `${baseUrl}/${id}`
+    const config = getAuthConfig()
+    const { data } = await axios.delete(url, config)
+
+    // Return data
+    return { success: true, category: data.category}
+  } catch (err) {
+    console.error('[Delete category failed]:', err)
+
+    // Return error message
+    const message = err.response.data.message
+    return { success: false, message}
+  }
+}

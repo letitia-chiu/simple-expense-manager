@@ -15,7 +15,7 @@ function CategoryForm({ categoryId }) {
 
   // ** Input useState
   const [name, setName] = useState('')
-  const [value, setValue] = useState('0')
+  const [isIncome, setIsIncome] = useState('false')
 
   // ** Async functions
   const getCategoryAsync = async () => {
@@ -23,7 +23,7 @@ function CategoryForm({ categoryId }) {
       const res = await getCategory(categoryId)
       if (res.success) {
         setName(res.category.name)
-        setValue(res.category.isIncome ? '1' : '0')
+        setIsIncome(res.category.isIncome ? 'true' : 'false')
       } else {
         // Handle error message
         const message = res.message || ''
@@ -73,7 +73,7 @@ function CategoryForm({ categoryId }) {
     if (!name) return
 
     // Pack user input
-    const payload = { name, isIncome: value === '1' }
+    const payload = { name, isIncome }
 
     // Edit if categoryId exists, else create new category
     if (categoryId) {
@@ -104,13 +104,13 @@ function CategoryForm({ categoryId }) {
       <FormControl>
         <FormLabel>Type</FormLabel>
         <RadioGroup 
-          onChange={setValue}
-          value={value}
+          onChange={setIsIncome}
+          value={isIncome}
           isDisabled={categoryId && true}
         >
           <Stack direction='row' spacing={8} mt={3}>
-            <Radio size='lg' value='0'>Expense</Radio>
-            <Radio size='lg' value='1'>Income</Radio>
+            <Radio size='lg' value='false'>Expense</Radio>
+            <Radio size='lg' value='true'>Income</Radio>
           </Stack>
         </RadioGroup>
       </FormControl>

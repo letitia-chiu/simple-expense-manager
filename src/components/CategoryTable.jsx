@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { deleteCategory } from '../api/category'
 import { toast, handleDelete } from '../utils/helpers'
 import styled from '@emotion/styled'
 import StyledCell from './StyledCell'
@@ -40,21 +41,21 @@ function HeaderColumn({ column }) {
 function CategoryRow({ category }) {
   const [isDeleted, setIsDeleted] = useState(false)
 
-  // const deleteRecordAsync = async (id) => {
-  //   try {
-  //     const res = await deleteRecord(id)
-  //     if (res.success) {
-  //       setIsDeleted(true)
-  //       toast('success', 'Delete record successfully')
-  //     } else {
-  //       // Handle error message
-  //       const message = res.message || ''
-  //       toast('error', 'Failed to delete record', message)
-  //     }
-  //   } catch (err) {
-  //     toast('error', err)
-  //   }
-  // }
+  const deleteCategoryAsync = async (id) => {
+    try {
+      const res = await deleteCategory(id)
+      if (res.success) {
+        setIsDeleted(true)
+        toast('success', 'Delete category successfully')
+      } else {
+        // Handle error message
+        const message = res.message || ''
+        toast('error', 'Failed to delete category', message)
+      }
+    } catch (err) {
+      toast('error', err)
+    }
+  }
 
   // ** If row has been deleted, return nothing
   if (isDeleted) return
@@ -72,7 +73,7 @@ function CategoryRow({ category }) {
             <ActionButton><EditIcon /></ActionButton>
           </Link>
           <ActionButton 
-            onClick={() => handleDelete?.(record.id, deleteRecordAsync)}
+            onClick={() => handleDelete?.(category.id, deleteCategoryAsync)}
           >
             <DeleteIcon />
           </ActionButton>

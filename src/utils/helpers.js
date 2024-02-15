@@ -27,7 +27,7 @@ export const getAuthConfig = () => {
 export const handleDelete = async (id, cb) => {
   if (!id) return
   Swal.fire({
-    title: 'Delete the record?',
+    title: 'Delete?',
     text: 'You will not be able to recover it!',
     icon: 'warning',
     showCancelButton: true,
