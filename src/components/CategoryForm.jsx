@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-
+import { getCategory } from '../api/category'
 import { toast, handleDelete } from '../utils/helpers'
 import {
   FormControl, FormLabel, FormErrorMessage,
@@ -18,6 +18,22 @@ function CategoryForm({ categoryId }) {
   const [value, setValue] = useState('0')
 
   // ** Async functions
+  const getCategoryAsync = async () => {
+    try {
+      const res = await getCategory(categoryId)
+      if (res.success) {
+        setName(res.category.name)
+        setValue(res.category.isIncome ? '1' : '0')
+      } else {
+        // Handle error message
+        const message = res.message || ''
+        toast('error', 'Loading Failed', message)
+        navigate(`/${type}`)
+      }
+    } catch (err) {
+      toast('error', err)
+    }
+  }
   
 
   // ** Submit function
@@ -39,14 +55,14 @@ function CategoryForm({ categoryId }) {
   // ** Get data from API when page first loads
   useEffect(() => {
     // Get category data if categoryId exists
-    if (categoryId) console.log('edit mode')
+    if (categoryId) getCategoryAsync()
   }, [categoryId])
 
   // ******** JSX return ******** //
   return (
     <Stack w='90%' my={3} spacing={8}>
       <FormControl>
-        <FormLabel>Name</FormLabel>
+        <FormLabel>Category name</FormLabel>
         <Input
           type='text'
           value={name}

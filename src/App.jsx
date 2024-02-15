@@ -10,7 +10,7 @@ import CreatePage from './views/CreatePage'
 import EditPage from './views/EditPage'
 import LoginPage from './views/LoginPage'
 import CategoryPage from './views/CategoryPage'
-import CategoryCreatePage from './views/CategoryCreatePage'
+import CategoryFormPage from './views/CategoryFormPage'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
@@ -66,7 +66,11 @@ function App() {
               />
               <Route
                 path="/category/create"
-                element={<CategoryCreatePage isMobile={isMobile} />}
+                element={<CategoryFormPage isMobile={isMobile} />}
+              />
+              <Route
+                path="/category/:id/edit"
+                element={<CategoryFormPage isMobile={isMobile} />}
               />
               <Route
                 path="/category"

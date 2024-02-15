@@ -23,3 +23,21 @@ export const getCategories = async (type) => {
     return { success: false, message}
   }
 }
+
+export const getCategory = async (id) => {
+  try {
+    // Send request
+    const url = `${baseUrl}/${id}`
+    const config = getAuthConfig()
+    const { data } = await axios.get(url, config)
+
+    // Return data
+    return { success: true, category: data.category}
+  } catch (err) {
+    console.error('[Get category failed]:', err)
+
+    // Return error message
+    const message = err.response.data.message
+    return { success: false, message}
+  }
+}

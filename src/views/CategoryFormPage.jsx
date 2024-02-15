@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../utils/AuthContext'
 
 // Components
@@ -9,6 +9,7 @@ import PlainHeader from '../components/PlainHeader'
 import CategoryForm from '../components/CategoryForm'
 
 function CategoryCreatePage({ isMobile }) {
+  const { id } = useParams()
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
 
@@ -21,7 +22,7 @@ function CategoryCreatePage({ isMobile }) {
     <Container>
       <Navbar isMobile={isMobile} page="category"/>
       <PlainHeader page="createCategory"/>
-      <CategoryForm />
+      <CategoryForm categoryId={id && id !== 'create' ? id : null}/>
     </Container>
   )
 }

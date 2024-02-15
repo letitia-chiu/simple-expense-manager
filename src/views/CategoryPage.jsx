@@ -13,14 +13,10 @@ import CategoryTable from '../components/CategoryTable'
 import CategoryList from '../components/CategoryList'
 import CreateButton from '../components/CreateButton'
 
-const dummyCats = [
-  { id: 1, name: 'Salary' },
-  { id: 2, name: 'Bonus' }
-]
 
 function CategoryPage ({ isMobile }) {
   const navigate = useNavigate()
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated } = useAuth()
   const [tab, setTab] = useState('income')
   const [categories, setCategories] = useState([])
 

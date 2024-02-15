@@ -4,6 +4,7 @@ import {
   Button, ButtonGroup
 } from '@chakra-ui/react'
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
+import { Link } from 'react-router-dom'
 
 const CategoryItem = ({ category }) => {
   return (
@@ -18,7 +19,9 @@ const CategoryItem = ({ category }) => {
       </h2>
       <AccordionPanel pb={4}>
         <ButtonGroup size='sm' spacing={5} my={3}>
-          <Button leftIcon={<EditIcon />} colorScheme='blue'>Edit</Button>
+          <Link to={`/category/${category.id}/edit`}>
+            <Button leftIcon={<EditIcon />} colorScheme='blue'>Edit</Button>
+          </Link>
           <Button leftIcon={<DeleteIcon />} colorScheme='red'>Delete</Button>
         </ButtonGroup>
       </AccordionPanel>

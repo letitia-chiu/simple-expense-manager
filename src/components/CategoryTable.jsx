@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast, handleDelete } from '../utils/helpers'
-import dayjs from 'dayjs'
 import styled from '@emotion/styled'
 import StyledCell from './StyledCell'
 import EditIcon from '../assets/edit.svg?react'
@@ -69,7 +68,7 @@ function CategoryRow({ category }) {
       </Td>
       <Td>
         <StyledCell justify="space-around">
-          <Link to={`/#`}>
+          <Link to={`/category/${category.id}/edit`}>
             <ActionButton><EditIcon /></ActionButton>
           </Link>
           <ActionButton 
