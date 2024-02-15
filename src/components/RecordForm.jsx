@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getRecord } from '../api/record'
+import { getRecord, postRecord } from '../api/record'
 import { getCategories } from '../api/category'
 import { toast } from '../utils/helpers'
 import dayjs from 'dayjs'
@@ -20,7 +20,7 @@ function RecordForm({ type, recordId }) {
   const [categories, setCategories] = useState([])
   const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'))
   const [title, setTitle] = useState('')
-  const [category, setCategory] = useState('')
+  const [categoryId, setCategoryId] = useState('')
   const [amount, setAmount] = useState('')
   const inputComplete = title && amount
 
@@ -40,7 +40,7 @@ function RecordForm({ type, recordId }) {
         setDate(res.record.date)
         setTitle(res.record.title)
         setAmount(res.record.amount)
-        setCategory(res.record.categoryId)
+        setCategoryId(res.record.categoryId)
       } else {
         // Handle error message
         const message = res.message || ''
@@ -65,26 +65,36 @@ function RecordForm({ type, recordId }) {
     }
   }
 
+  const postRecordAsync = async (payload) => {
+    try {
+      payload.isIncome = type === 'income'
+      const res = await postRecord(payload)
+      if (res.success) {
+        toast('success', 'Add record successfully')
+        return navigate(`/${type}`)
+      } else {
+        // Handle error message
+        const message = res.message || ''
+        toast('error', 'Loading Failed', message)
+      }
+    } catch (err) {
+      toast('error', err)
+    }
+  }
+
   // ** Submit function
   const handleSave = () => {
     // Validate user input
-    if (!titleInput || titleInput.trim().length === 0) return setTitleInvalid(true)
-    if (!amountInput) return setAmountInvalid(true)
+    if (!inputComplete) return
 
     // Pack user input
-    const payload = {
-      title: titleInput,
-      amount: amountInput,
-      categoryId: categoryInput,
-      date: dateInput,
-      isIncome: type === 'income' // 需確認，編輯時要從record抓
-    }
+    const payload = { date, title, amount, categoryId }
 
-    // Edit if record exists, else create new record
-    if (record) {
+    // Edit if recordId exists, else create new record
+    if (recordId) {
       console.log('Edit:', payload)
     } else {
-      console.log('Create:', payload)
+      postRecordAsync(payload)
     }
   }
 
@@ -129,8 +139,8 @@ function RecordForm({ type, recordId }) {
         <FormLabel>Category</FormLabel>
         <Select
           placeholder='Select category'
-          value={category}
-          onChange={e => setCategory(e.target.value)}
+          value={categoryId}
+          onChange={e => setCategoryId(e.target.value)}
         >
           {categories.map(c => (
             <option key={c.id} value={c.id}>{c.name}</option>

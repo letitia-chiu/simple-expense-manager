@@ -28,8 +28,6 @@ export const getRecords = async (type, date) => {
 
 export const getRecord = async (id) => {
   try {
-    if (!id) return
-
     // Send request
     const url = `${baseUrl}/${id}`
     const config = getAuthConfig()
@@ -39,6 +37,24 @@ export const getRecord = async (id) => {
     return { success: true, record: data.record}
   } catch (err) {
     console.error('[Get record failed]:', err)
+
+    // Return error message
+    const message = err.response.data.message
+    return { success: false, message}
+  }
+}
+
+export const postRecord = async (payload) => {
+  try {
+    console.log('payload:', payload)
+    // Send request
+    const config = getAuthConfig()
+    const { data } = await axios.post(baseUrl, payload, config)
+
+    // Return data
+    return { success: true, record: data.record}
+  } catch (err) {
+    console.error('[Post record failed]:', err)
 
     // Return error message
     const message = err.response.data.message
