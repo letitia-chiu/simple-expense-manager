@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../utils/AuthContext'
 import styled from '@emotion/styled'
 import Container from '../components/Container'
 import {
@@ -7,7 +8,6 @@ import {
   Input, Button, Stack
 } from '@chakra-ui/react'
 import { InfoOutlineIcon } from '@chakra-ui/icons'
-import { login } from '../api/auth'
 import { toast } from '../utils/helpers'
 
 const Header = styled.div`
@@ -39,6 +39,7 @@ function LoginPage() {
   const [password, setPassword] = useState('')
   const inputComplete = email && password
   const navigate = useNavigate()
+  const { login, isAuthenticated } = useAuth()
 
   // ** Login function
   const handleLogin = async () => {
@@ -57,9 +58,15 @@ function LoginPage() {
         toast('error', 'Login Failed', message)
       }
     } catch (err) {
+      console.error(err)
       toast('error', err)
     }
   }
+
+  // ** If user is authenticated, redirect to income page
+  useEffect(() => {
+    if (isAuthenticated) navigate('/income')
+  }, [navigate, isAuthenticated])
 
   // ******** JSX return ******** //
   return (

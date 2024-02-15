@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { ThemeProvider } from '@emotion/react'
 import theme from './utils/theme'
 import { BrowserRouter, Route, Routes} from 'react-router-dom'
+import { AuthProvider } from './utils/AuthContext'
 
 // Views
 import RecordListPage from './views/RecordListPage'
@@ -31,40 +32,42 @@ function App() {
     <ThemeProvider theme={theme.light}>
       <div className="App">
         <BrowserRouter>
-          <Routes>
-            <Route
-              path="/login"
-              element={<LoginPage />}
-            />
-            <Route
-              path="/income/create"
-              element={<CreatePage isMobile={isMobile} type="income" />}
-            />
-            <Route
-              path="/income/:id/edit"
-              element={<EditPage isMobile={isMobile} type="income" />}
-            />
-            <Route
-              path="/income"
-              element={<RecordListPage isMobile={isMobile} type="income" />}
-            />
-            <Route
-              path="/expense/create"
-              element={<CreatePage isMobile={isMobile} type="expense" />}
-            />
-            <Route
-              path="/expense/:id/edit"
-              element={<EditPage isMobile={isMobile} type="expense" />}
-            />
-            <Route
-              path="/expense"
-              element={<RecordListPage isMobile={isMobile} type="expense" />}
-            />
-            <Route
-              path="*"
-              element={<div>Simple Expense Manager</div>}
-            />
-          </Routes>
+          <AuthProvider>
+            <Routes>
+              <Route
+                path="/login"
+                element={<LoginPage />}
+              />
+              <Route
+                path="/income/create"
+                element={<CreatePage isMobile={isMobile} type="income" />}
+              />
+              <Route
+                path="/income/:id/edit"
+                element={<EditPage isMobile={isMobile} type="income" />}
+              />
+              <Route
+                path="/income"
+                element={<RecordListPage isMobile={isMobile} type="income" />}
+              />
+              <Route
+                path="/expense/create"
+                element={<CreatePage isMobile={isMobile} type="expense" />}
+              />
+              <Route
+                path="/expense/:id/edit"
+                element={<EditPage isMobile={isMobile} type="expense" />}
+              />
+              <Route
+                path="/expense"
+                element={<RecordListPage isMobile={isMobile} type="expense" />}
+              />
+              <Route
+                path="*"
+                element={<div>Simple Expense Manager</div>}
+              />
+            </Routes>
+          </AuthProvider>
         </BrowserRouter>
         
       </div>

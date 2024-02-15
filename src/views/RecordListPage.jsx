@@ -1,5 +1,7 @@
 import dayjs from 'dayjs'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../utils/AuthContext'
 import { getRecords } from '../api/record'
 import { toast } from '../utils/helpers'
 
@@ -13,6 +15,8 @@ import CreateButton from '../components/CreateButton'
 
 
 function RecordListPage({ type, isMobile }) {
+  const navigate = useNavigate()
+  const { isAuthenticated, currentUser } = useAuth()
   const [records, setRecords] = useState([])
   const [month, setMonth] = useState(null)
 
@@ -45,6 +49,11 @@ function RecordListPage({ type, isMobile }) {
 
     getRecordsAsync(type, date)
   }
+
+  // ** Auth Check
+  useEffect(() => {
+    if (!isAuthenticated) navigate('/login')
+  }, [navigate, isAuthenticated])
 
   // ** Get records from API when page first loads
   useEffect(() => {
