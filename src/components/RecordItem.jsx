@@ -46,13 +46,23 @@ const RecordAmount = styled.div`
 `
 
 function RecordItem({ record }) {
+  const recordTitle = record.title.length > 20 ? record.title.substring(0, 20) + '...' : record.title
+  let categoryName = ''
+  if (record.Category?.name) {
+    if (record.Category.name.length > 20) {
+      categoryName = record.Category.name.substring(0, 20) + '...'
+    } else {
+      categoryName = record.Category.name
+    }
+  }
+
   return (
     <Link to={`/${record.isIncome ? 'income' : 'expense'}/${record.id}/edit`}>
     <RecordWrapper>
       <RecordDate>{dayjs(record.date).format('M/D')}</RecordDate>
       <RecordMain>
-        <RecordTitle>{record.title}</RecordTitle>
-        <RecordCategory>{record.Category?.name || '(Uncategorized)'}</RecordCategory>
+        <RecordTitle>{recordTitle}</RecordTitle>
+        <RecordCategory>{categoryName || '(Uncategorized)'}</RecordCategory>
       </RecordMain>
       <RecordAmount>{record.amount}</RecordAmount>
     </RecordWrapper>

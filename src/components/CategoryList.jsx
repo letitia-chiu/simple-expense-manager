@@ -13,6 +13,7 @@ import { toast, handleDelete } from '../utils/helpers'
 const CategoryItem = ({ category }) => {
   const [isDeleted, setIsDeleted] = useState(false)
   const { apiErrorHandler } = useApiErr()
+  const categoryName = category.name.length > 20 ? category.name.substring(0, 20) + '...' : category.name
 
   const deleteCategoryAsync = async (id) => {
     try {
@@ -36,7 +37,7 @@ const CategoryItem = ({ category }) => {
       <h2>
         <AccordionButton>
           <Box as="span" flex='1' textAlign='left'>
-            {category.name}
+            {categoryName}
           </Box>
           <AccordionIcon />
         </AccordionButton>

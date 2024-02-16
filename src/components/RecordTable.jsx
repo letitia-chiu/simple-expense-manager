@@ -14,9 +14,15 @@ import {
 
 const Wrapper = styled.div`
   width: 100%;
-  padding: 0 10px;
+  max-width: 1200px;
+  margin-bottom: 20px;
+  padding: 0 8% 15vw;
   display: flex;
   justify-content: center;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `
 const ActionButton = styled.div`
   svg {
@@ -43,6 +49,7 @@ function HeaderColumn({ column }) {
 function RecordRow({ record }) {
   const [isDeleted, setIsDeleted] = useState(false)
   const { apiErrorHandler } = useApiErr()
+  const recordTitle = record.title.length > 30 ? record.title.substring(0, 30) + '...' : record.title
 
   const deleteRecordAsync = async (id) => {
     try {
@@ -70,7 +77,7 @@ function RecordRow({ record }) {
       </Td>
       <Td>
         <StyledCell>
-          {record.title}
+          {recordTitle}
         </StyledCell>
       </Td>
       <Td>
@@ -114,22 +121,20 @@ function RecordTable({ records }) {
   // ******** JSX return ******** //
   return (
     <Wrapper>
-      <TableContainer w="100%" maxWidth="960px">
-        <Table variant='simple'>
-          <Thead>
-            <Tr>
-              {columns.map(c => (
-                <HeaderColumn key={c.name} column={c} />
-              ))}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {records.map(r => (
-              <RecordRow key={r.id} record={r} />
+      <Table variant='simple'>
+        <Thead>
+          <Tr>
+            {columns.map(c => (
+              <HeaderColumn key={c.name} column={c} />
             ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {records.map(r => (
+            <RecordRow key={r.id} record={r} />
+          ))}
+        </Tbody>
+      </Table>
     </Wrapper>
   )
 }
