@@ -1,9 +1,8 @@
 import dayjs from 'dayjs'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../utils/AuthContext'
 import { getRecords } from '../api/record'
 import { toast } from '../utils/helpers'
+import { useApiErr } from '../utils/ApiErrorContext'
 
 // Components
 import Container from '../components/Container'
@@ -15,10 +14,9 @@ import CreateButton from '../components/CreateButton'
 
 
 function RecordListPage({ type, isMobile }) {
-  const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
   const [records, setRecords] = useState([])
   const [month, setMonth] = useState(null)
+  const { apiErrorHandler } = useApiErr()
 
   // ** Data fetching function
   const getRecordsAsync = async (type, date) => {
@@ -27,11 +25,9 @@ function RecordListPage({ type, isMobile }) {
       if (res.success) {
         setRecords(res.records)
         setMonth(res.month)
-        return
+      } else {
+        apiErrorHandler(res)
       }
-      // Handle error message
-      const message = res.message || ''
-      toast('error', 'Loading Failed', message)
     } catch (err) {
       toast('error', err)
     }
@@ -49,11 +45,6 @@ function RecordListPage({ type, isMobile }) {
 
     getRecordsAsync(type, date)
   }
-
-  // ** Auth Check
-  useEffect(() => {
-    if (!isAuthenticated) navigate('/login')
-  }, [navigate, isAuthenticated])
 
   // ** Get records from API when page first loads
   useEffect(() => {

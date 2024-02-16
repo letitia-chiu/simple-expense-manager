@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../utils/AuthContext'
 import { getCategories } from '../api/category'
+import { useApiErr } from '../utils/ApiErrorContext'
 import { toast } from '../utils/helpers'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 
@@ -15,29 +14,23 @@ import CreateButton from '../components/CreateButton'
 
 
 function CategoryPage ({ isMobile }) {
-  const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
   const [tab, setTab] = useState('income')
   const [categories, setCategories] = useState([])
+  const { apiErrorHandler } = useApiErr()
 
   // ** Async function
   const getCategoriesAsync = async (type) => {
     try {
       const res = await getCategories(type)
-      if (res.success) return setCategories(res.categories)
-
-      // Handle error message
-      const message = res.message || ''
-      toast('error', 'Loading Failed', message)
+      if (res.success) {
+        setCategories(res.categories)
+      } else {
+        apiErrorHandler(res)
+      }
     } catch (err) {
       toast('error', err)
     }
   }
-
-  // ** Auth Check
-  useEffect(() => {
-    if (!isAuthenticated) navigate('/login')
-  }, [navigate, isAuthenticated])
 
   // ** Get data from API when page first loads
   useEffect(() => {

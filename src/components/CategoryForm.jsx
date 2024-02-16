@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getCategory, postCategory, patchCategory } from '../api/category'
-import { toast, handleDelete } from '../utils/helpers'
+import { useApiErr } from '../utils/ApiErrorContext' 
+import { toast } from '../utils/helpers'
 import {
   FormControl, FormLabel, FormErrorMessage,
   Input, Radio, RadioGroup, Button, ButtonGroup, Stack
@@ -12,6 +13,7 @@ import { CheckIcon, CloseIcon, InfoOutlineIcon } from '@chakra-ui/icons'
 
 function CategoryForm({ categoryId }) {
   const navigate = useNavigate()
+  const { apiErrorHandler } = useApiErr()
 
   // ** Input useState
   const [name, setName] = useState('')
@@ -25,9 +27,7 @@ function CategoryForm({ categoryId }) {
         setName(res.category.name)
         setIsIncome(res.category.isIncome ? 'true' : 'false')
       } else {
-        // Handle error message
-        const message = res.message || ''
-        toast('error', 'Loading Failed', message)
+        apiErrorHandler(res)
         navigate(`/${type}`)
       }
     } catch (err) {
@@ -43,8 +43,7 @@ function CategoryForm({ categoryId }) {
         return navigate('/category')
       } else {
         // Handle error message
-        const message = res.message || ''
-        toast('error', 'Failed to add category', message)
+        apiErrorHandler(res, 'Failed to add category')
       }
     } catch (err) {
       toast('error', err)
@@ -59,8 +58,7 @@ function CategoryForm({ categoryId }) {
         return navigate('/category')
       } else {
         // Handle error message
-        const message = res.message || ''
-        toast('error', 'Failed to edit category', message)
+        apiErrorHandler(res, 'Failed to edit category')
       }
     } catch (err) {
       toast('error', err)

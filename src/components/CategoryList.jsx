@@ -7,10 +7,12 @@ import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { deleteCategory } from '../api/category'
+import { useApiErr } from '../utils/ApiErrorContext' 
 import { toast, handleDelete } from '../utils/helpers'
 
 const CategoryItem = ({ category }) => {
   const [isDeleted, setIsDeleted] = useState(false)
+  const { apiErrorHandler } = useApiErr()
 
   const deleteCategoryAsync = async (id) => {
     try {
@@ -19,9 +21,7 @@ const CategoryItem = ({ category }) => {
         setIsDeleted(true)
         toast('success', 'Delete category successfully')
       } else {
-        // Handle error message
-        const message = res.message || ''
-        toast('error', 'Failed to delete category', message)
+        apiErrorHandler(res, 'Failed to delete category')
       }
     } catch (err) {
       toast('error', err)

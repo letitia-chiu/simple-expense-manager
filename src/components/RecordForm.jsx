@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getRecord, postRecord, patchRecord, deleteRecord } from '../api/record'
 import { getCategories } from '../api/category'
+import { useApiErr } from '../utils/ApiErrorContext' 
 import { toast, handleDelete } from '../utils/helpers'
 import dayjs from 'dayjs'
 import {
@@ -15,6 +16,7 @@ import { CheckIcon, CloseIcon, DeleteIcon, InfoOutlineIcon } from '@chakra-ui/ic
 
 function RecordForm({ type, recordId }) {
   const navigate = useNavigate()
+  const { apiErrorHandler } = useApiErr()
 
   // ** Input useState
   const [categories, setCategories] = useState([])
@@ -42,9 +44,7 @@ function RecordForm({ type, recordId }) {
         setAmount(res.record.amount)
         setCategoryId(res.record.categoryId)
       } else {
-        // Handle error message
-        const message = res.message || ''
-        toast('error', 'Loading Failed', message)
+        apiErrorHandler(res)
         navigate(`/${type}`)
       }
     } catch (err) {
@@ -55,11 +55,11 @@ function RecordForm({ type, recordId }) {
   const getCategoriesAsync = async () => {
     try {
       const res = await getCategories(type)
-      if (res.success) return setCategories(res.categories)
-
-      // Handle error message
-      const message = res.message || ''
-      toast('error', 'Loading Failed', message)
+      if (res.success) {
+        setCategories(res.categories)
+      } else {
+        apiErrorHandler(res)
+      }
     } catch (err) {
       toast('error', err)
     }
@@ -73,9 +73,7 @@ function RecordForm({ type, recordId }) {
         toast('success', 'Add record successfully')
         return navigate(`/${type}`)
       } else {
-        // Handle error message
-        const message = res.message || ''
-        toast('error', 'Failed to add record', message)
+        apiErrorHandler(res, 'Failed to add record')
       }
     } catch (err) {
       toast('error', err)
@@ -89,9 +87,7 @@ function RecordForm({ type, recordId }) {
         toast('success', 'Edit record successfully')
         return navigate(`/${type}`)
       } else {
-        // Handle error message
-        const message = res.message || ''
-        toast('error', 'Failed to edit record', message)
+        apiErrorHandler(res, 'Failed to edit record')
       }
     } catch (err) {
       toast('error', err)
@@ -105,9 +101,7 @@ function RecordForm({ type, recordId }) {
         toast('success', 'Delete record successfully')
         return navigate(`/${type}`)
       } else {
-        // Handle error message
-        const message = res.message || ''
-        toast('error', 'Failed to delete record', message)
+        apiErrorHandler(res, 'Failed to delete record')
       }
     } catch (err) {
       toast('error', err)

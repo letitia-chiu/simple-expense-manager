@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { ThemeProvider } from '@emotion/react'
 import theme from './utils/theme'
 import { BrowserRouter, Route, Routes} from 'react-router-dom'
-import { AuthProvider } from './utils/AuthContext'
+import { ApiErrProvider } from './utils/ApiErrorContext'
 
 // Views
 import RecordListPage from './views/RecordListPage'
@@ -34,7 +34,7 @@ function App() {
     <ThemeProvider theme={theme.light}>
       <div className="App">
         <BrowserRouter>
-          <AuthProvider>
+          <ApiErrProvider>
             <Routes>
               <Route
                 path="/login"
@@ -81,7 +81,7 @@ function App() {
                 element={<div>Simple Expense Manager</div>}
               />
             </Routes>
-          </AuthProvider>
+          </ApiErrProvider>
         </BrowserRouter>
         
       </div>

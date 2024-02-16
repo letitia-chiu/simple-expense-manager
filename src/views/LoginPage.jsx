@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../utils/AuthContext'
+import { login, authCheck } from '../api/auth'
+import { useApiErr } from '../utils/ApiErrorContext'
 import styled from '@emotion/styled'
 import Container from '../components/Container'
 import {
@@ -39,7 +40,7 @@ function LoginPage() {
   const [password, setPassword] = useState('')
   const inputComplete = email && password
   const navigate = useNavigate()
-  const { login, isAuthenticated } = useAuth()
+  const { apiErrorHandler } = useApiErr()
 
   // ** Login function
   const handleLogin = async () => {
@@ -54,19 +55,25 @@ function LoginPage() {
         toast('success', 'Login Success')
         return navigate('/income')
       } else {
-        const message = res.message || ''
-        toast('error', 'Login Failed', message)
+        apiErrorHandler(res, 'Login Failed')
       }
     } catch (err) {
-      console.error(err)
       toast('error', err)
     }
   }
 
   // ** If user is authenticated, redirect to income page
   useEffect(() => {
-    if (isAuthenticated) navigate('/income')
-  }, [navigate, isAuthenticated])
+    const authCheckAsync = async () => {
+      try {
+        const res = await authCheck()
+        if (res.success) return navigate('/income')
+      } catch (err) {
+        toast('error', err)
+      }
+    }
+    authCheckAsync()
+  }, [])
 
   // ******** JSX return ******** //
   return (

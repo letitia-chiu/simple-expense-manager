@@ -1,7 +1,10 @@
 import styled from '@emotion/styled'
 import LogoutIcon from '../assets/logout.svg?react'
 import NavTab from './NavTab'
-import { useAuth } from '../utils/AuthContext'
+import { authCheck } from '../api/auth'
+import { useApiErr } from '../utils/ApiErrorContext'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from '../utils/helpers'
 import Swal from 'sweetalert2'
 
@@ -75,7 +78,11 @@ const UserLogout = styled.div`
 `
 
 function Navbar({ isMobile, page }) {
-  const { logout, currentUser } = useAuth()
+  const currentUser = localStorage.getItem('currentUser')
+  const [user, setUser] = useState(() => currentUser || null)
+  const { apiErrorHandler } = useApiErr()
+  const navigate = useNavigate()
+
   const handleLogout = () => {
     Swal.fire({
       title: 'Logout?',
@@ -86,12 +93,35 @@ function Navbar({ isMobile, page }) {
       confirmButtonText: 'Logout'
     }).then((result) => {
       if (result.isConfirmed) {
-        logout()
+        localStorage.removeItem('authToken')
+        localStorage.removeItem('currentUser')
         toast('success', "You've logout!")
+        navigate('/login')
       }
     })
     
   }
+
+  // ** If no user data didn't exist, do authCheck
+  useEffect(() => {
+    const authCheckAsync = async () => {
+      try {
+        console.log('navbar auth')
+        const res = await authCheck()
+        if (res.success) {
+          setUser(res.user.name)
+        } else {
+          apiErrorHandler(res, 'Authenticate failed')
+        }
+      } catch (err) {
+        toast('error', err)
+      }
+    }
+    
+    if (!user) {
+      authCheckAsync()
+    }
+  }, [])
 
   return (
     <Wrapper>
@@ -104,7 +134,7 @@ function Navbar({ isMobile, page }) {
       </Tabs>
       <UserLogout onClick={() => handleLogout()}>
         <LogoutIcon />
-        <p>{currentUser && `Hi, ${currentUser.name}`}</p>
+        <p>{user && `Hi, ${user}`}</p>
       </UserLogout>
     </Wrapper>
   )

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { deleteRecord } from '../api/record'
 import { toast, handleDelete } from '../utils/helpers'
+import { useApiErr } from '../utils/ApiErrorContext' 
 import dayjs from 'dayjs'
 import styled from '@emotion/styled'
 import StyledCell from './StyledCell'
@@ -41,6 +42,7 @@ function HeaderColumn({ column }) {
 
 function RecordRow({ record }) {
   const [isDeleted, setIsDeleted] = useState(false)
+  const { apiErrorHandler } = useApiErr()
 
   const deleteRecordAsync = async (id) => {
     try {
@@ -49,9 +51,7 @@ function RecordRow({ record }) {
         setIsDeleted(true)
         toast('success', 'Delete record successfully')
       } else {
-        // Handle error message
-        const message = res.message || ''
-        toast('error', 'Failed to delete record', message)
+        apiErrorHandler(res, 'Failed to delete record')
       }
     } catch (err) {
       toast('error', err)

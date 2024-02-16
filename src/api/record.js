@@ -19,10 +19,11 @@ export const getRecords = async (type, date) => {
     return { success: true, records: data.records, month: data.period}
   } catch (err) {
     console.error('[Get records failed]:', err)
-
+    
     // Return error message
+    const status = err.response.status
     const message = err.response.data.message
-    return { success: false, message}
+    return { success: false, message, status}
   }
 }
 
@@ -39,8 +40,9 @@ export const getRecord = async (id) => {
     console.error('[Get record failed]:', err)
 
     // Return error message
+    const status = err.response.status
     const message = err.response.data.message
-    return { success: false, message}
+    return { success: false, message, status}
   }
 }
 
@@ -56,8 +58,9 @@ export const postRecord = async (payload) => {
     console.error('[Post record failed]:', err)
 
     // Return error message
+    const status = err.response.status
     const message = err.response.data.message
-    return { success: false, message}
+    return { success: false, message, status}
   }
 }
 
@@ -74,8 +77,9 @@ export const patchRecord = async (id, payload) => {
     console.error('[Patch record failed]:', err)
 
     // Return error message
+    const status = err.response.status
     const message = err.response.data.message
-    return { success: false, message}
+    return { success: false, message, status}
   }
 }
 
@@ -92,7 +96,8 @@ export const deleteRecord = async (id) => {
     console.error('[Delete record failed]:', err)
 
     // Return error message
+    const status = err.response.status
     const message = err.response.data.message
-    return { success: false, message}
+    return { success: false, message, status}
   }
 }

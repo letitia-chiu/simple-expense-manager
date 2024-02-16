@@ -11,6 +11,7 @@ export const login = async (email, password) => {
     // If authToken exists, set it to localStorage and return user data
     if (authToken) {
       localStorage.setItem('authToken', authToken)
+      localStorage.setItem('currentUser', user.name)
       return { success: true, user }
     } else {
       return { success: false, message: 'Failed to get authToken'}
@@ -19,8 +20,9 @@ export const login = async (email, password) => {
     console.error('[Login failed]: ', err)
 
     // Return error message
+    const status = err.response.status
     const message = err.response.data.message
-    return { success: false, message}
+    return { success: false, message, status}
   }
 }
 
@@ -40,6 +42,8 @@ export const authCheck = async () => {
     console.error('[Authentication failed]: ', err)
 
     // Return error message
-    return { success: false, err}
+    const status = err.response.status
+    const message = err.response.data.message
+    return { success: false, message, status}
   }
 }
