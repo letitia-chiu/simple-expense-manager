@@ -16,7 +16,7 @@ import CreateButton from '../components/CreateButton'
 const Wrapper = styled.div`
   width: 100%;
   max-width: 1200px;
-  margin-bottom: 120px;
+  margin-bottom: 130px;
   padding: 0 8% 15vw;
   display: flex;
   justify-content: center;

@@ -10,7 +10,8 @@ const pageTitle = {
   expense: "Add New Expense",
   category: "Categories",
   createCategory: "Add New Category",
-  editCategory: "Edit Category"
+  editCategory: "Edit Category",
+  setting: "Setting"
 }
 
 function PlainHeader({ page, isEdit }) {

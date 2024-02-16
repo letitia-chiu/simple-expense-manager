@@ -55,7 +55,7 @@ const tabLink = {
   income: '/income',
   expense: '/expense',
   report: '/report',
-  setting: '/category',
+  setting: '/setting',
   category: '/category'
 }
 

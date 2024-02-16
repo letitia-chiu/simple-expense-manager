@@ -11,6 +11,7 @@ import EditPage from './views/EditPage'
 import LoginPage from './views/LoginPage'
 import CategoryPage from './views/CategoryPage'
 import CategoryFormPage from './views/CategoryFormPage'
+import SettingPage from './views/SettingPage'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
@@ -75,6 +76,10 @@ function App() {
               <Route
                 path="/category"
                 element={<CategoryPage isMobile={isMobile} />}
+              />
+              <Route
+                path='/setting'
+                element={<SettingPage isMobile={isMobile}/>}
               />
               <Route
                 path="*"

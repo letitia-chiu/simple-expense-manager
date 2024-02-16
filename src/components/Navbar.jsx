@@ -99,7 +99,6 @@ function Navbar({ isMobile, page }) {
         navigate('/login')
       }
     })
-    
   }
 
   // ** If no user data didn't exist, do authCheck
