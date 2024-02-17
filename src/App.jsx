@@ -12,6 +12,7 @@ import LoginPage from './views/LoginPage'
 import CategoryPage from './views/CategoryPage'
 import CategoryFormPage from './views/CategoryFormPage'
 import SettingPage from './views/SettingPage'
+import ReportPage from './views/ReportPage'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
@@ -80,6 +81,10 @@ function App() {
               <Route
                 path='/setting'
                 element={<SettingPage isMobile={isMobile}/>}
+              />
+              <Route
+                path='/report'
+                element={<ReportPage isMobile={isMobile} />}
               />
               <Route
                 path="*"

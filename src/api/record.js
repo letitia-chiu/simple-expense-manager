@@ -101,3 +101,32 @@ export const deleteRecord = async (id) => {
     return { success: false, message, status}
   }
 }
+
+export const getReport = async (date) => {
+  try {
+    // Query setting
+    const year = date ? dayjs(date).year() : ''
+    const month = date ? dayjs(date).month() + 1 : ''
+    const url = `${baseUrl}/report?year=${year}&month=${month}`
+
+    // Send request
+    const config = getAuthConfig()
+    const { data } = await axios.get(url, config)
+
+    // Return data
+    return {
+      success: true,
+      report: {
+        month: `${dayjs(date).format('MMM YYYY')}`,
+        ...data.report
+      }
+     }
+  } catch (err) {
+    console.error('[Get report failed]:', err)
+
+    // Return error message
+    const status = err.response.status
+    const message = err.response.data.message
+    return { success: false, message, status}
+  }
+}
