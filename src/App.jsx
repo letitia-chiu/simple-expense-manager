@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { ThemeProvider } from '@emotion/react'
 import theme from './utils/theme'
-import { BrowserRouter, Route, Routes} from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { ApiErrProvider } from './utils/ApiErrorContext'
 
 // Views
@@ -88,7 +88,7 @@ function App() {
               />
               <Route
                 path="*"
-                element={<div>Simple Expense Manager</div>}
+                element={<Navigate to="/login" replace />}
               />
             </Routes>
           </ApiErrProvider>
