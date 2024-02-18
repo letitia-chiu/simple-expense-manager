@@ -4,6 +4,7 @@ import { getRecord, postRecord, patchRecord, deleteRecord } from '../api/record'
 import { getCategories } from '../api/category'
 import { useApiErr } from '../utils/ApiErrorContext' 
 import { toast, handleDelete } from '../utils/helpers'
+import styled from '@emotion/styled'
 import dayjs from 'dayjs'
 import {
   FormControl, FormLabel, FormErrorMessage,
@@ -11,6 +12,24 @@ import {
   Button, ButtonGroup, IconButton, Stack
 } from '@chakra-ui/react'
 import { CheckIcon, CloseIcon, DeleteIcon, InfoOutlineIcon } from '@chakra-ui/icons'
+
+const Wrapper = styled.div`
+  flex: 1;
+  width: 95%;
+  margin-top: 10px;
+  margin-bottom: 130px;
+  display: flex;
+  justify-content: center;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media screen and (min-width: 960px) {
+    margin-bottom: 20px;
+  }
+`
+
 
 // ******** Main Function ******** //
 
@@ -136,80 +155,82 @@ function RecordForm({ type, recordId }) {
 
   // ******** JSX return ******** //
   return (
-    <Stack w='90%' my={3} spacing={5}>
-      <FormControl>
-        <FormLabel>Date</FormLabel>
-        <Input
-          type='date'
-          value={date}
-          onChange={e => setDate(e.target.value)}
-        />
-      </FormControl>
-
-      <FormControl>
-        <FormLabel>Title</FormLabel>
-        <Input
-          type='text'
-          placeholder='Enter title'
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
-      </FormControl>
-
-      <FormControl>
-        <FormLabel>Category</FormLabel>
-        <Select
-          placeholder='Select category'
-          value={categoryId}
-          onChange={e => setCategoryId(e.target.value)}
-        >
-          {categories.map(c => (
-            <option key={c.id} value={c.id}>{c.name}</option>
-          ))}
-        </Select>
-      </FormControl>
-
-      <FormControl>
-        <FormLabel>Amount</FormLabel>
-        <NumberInput value={amount}>
-          <NumberInputField
-            placeholder='Enter amount'
-            onChange={e => setAmount(e.target.value)}
+    <Wrapper>
+      <Stack w='90%' my={3} spacing={5}>
+        <FormControl>
+          <FormLabel>Date</FormLabel>
+          <Input
+            type='date'
+            value={date}
+            onChange={e => setDate(e.target.value)}
           />
-        </NumberInput>
-      </FormControl>
+        </FormControl>
 
-      <FormControl isInvalid={!inputComplete}>
-        <FormErrorMessage><InfoOutlineIcon mr={2}/>Title & amount is required</FormErrorMessage>
-      </FormControl>
+        <FormControl>
+          <FormLabel>Title</FormLabel>
+          <Input
+            type='text'
+            placeholder='Enter title'
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+          />
+        </FormControl>
 
-      <ButtonGroup justifyContent='end' spacing={5} mt={5}>
-        {recordId && <IconButton
-          colorScheme='red'
-          aria-label='Delete'
-          icon={<DeleteIcon />}
-          mr={5}
-          onClick={() => handleDelete?.(recordId, deleteRecordAsync)}
-        />}
-        <Button 
-          leftIcon={<CheckIcon />}
-          colorScheme='purple'
-          variant='solid'
-          onClick={handleSave}
-          isDisabled={!inputComplete}
-        >
-          Save
-        </Button>
-        <Button 
-          leftIcon={<CloseIcon />}
-          colorScheme='purple'
-          variant='outline'
-          onClick={() => navigate(-1)}
-        >
-          Cancel
-        </Button>
-      </ButtonGroup>
-    </Stack>
+        <FormControl>
+          <FormLabel>Category</FormLabel>
+          <Select
+            placeholder='Select category'
+            value={categoryId}
+            onChange={e => setCategoryId(e.target.value)}
+          >
+            {categories.map(c => (
+              <option key={c.id} value={c.id}>{c.name}</option>
+            ))}
+          </Select>
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Amount</FormLabel>
+          <NumberInput value={amount}>
+            <NumberInputField
+              placeholder='Enter amount'
+              onChange={e => setAmount(e.target.value)}
+            />
+          </NumberInput>
+        </FormControl>
+
+        <FormControl isInvalid={!inputComplete}>
+          <FormErrorMessage><InfoOutlineIcon mr={2}/>Title & amount is required</FormErrorMessage>
+        </FormControl>
+
+        <ButtonGroup justifyContent='end' spacing={5} mt={5}>
+          {recordId && <IconButton
+            colorScheme='red'
+            aria-label='Delete'
+            icon={<DeleteIcon />}
+            mr={5}
+            onClick={() => handleDelete?.(recordId, deleteRecordAsync)}
+          />}
+          <Button 
+            leftIcon={<CheckIcon />}
+            colorScheme='purple'
+            variant='solid'
+            onClick={handleSave}
+            isDisabled={!inputComplete}
+          >
+            Save
+          </Button>
+          <Button 
+            leftIcon={<CloseIcon />}
+            colorScheme='purple'
+            variant='outline'
+            onClick={() => navigate(-1)}
+          >
+            Cancel
+          </Button>
+        </ButtonGroup>
+      </Stack>
+    </Wrapper>
   )
 }
 

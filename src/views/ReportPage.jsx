@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { useState, useEffect } from 'react'
 import { getReport } from '../api/record'
 import { useApiErr } from '../utils/ApiErrorContext'
+import { toast } from '../utils/helpers'
 import { 
   Table, Thead, Tbody, Tr, Th, Td, TableContainer, Divider
 } from '@chakra-ui/react'

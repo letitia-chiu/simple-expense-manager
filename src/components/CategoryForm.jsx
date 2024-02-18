@@ -28,7 +28,7 @@ function CategoryForm({ categoryId }) {
         setIsIncome(res.category.isIncome ? 'true' : 'false')
       } else {
         apiErrorHandler(res)
-        navigate(`/${type}`)
+        navigate('/category')
       }
     } catch (err) {
       toast('error', err)

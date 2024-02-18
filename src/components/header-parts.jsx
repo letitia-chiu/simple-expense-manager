@@ -4,8 +4,8 @@ const HeaderWrapper = styled.div`
   background-color: ${({ theme }) => theme.foregroundColor};
   width: 100%;
   min-width: 300px;
-  height: 120px;
-  padding: 50px 10px 10px;
+  height: 80px;
+  padding: 10px;
   display: flex;
   justify-content: center;
 
