@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { ThemeProvider } from '@emotion/react'
 import theme from './utils/theme'
-import { HashRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { ApiErrProvider } from './utils/ApiErrorContext'
 
 // Views
@@ -35,7 +35,7 @@ function App() {
   return (
     <ThemeProvider theme={theme.light}>
       <div className="App">
-        <HashRouter>
+        <BrowserRouter>
           <ApiErrProvider>
             <Routes>
               <Route
@@ -92,7 +92,7 @@ function App() {
               />
             </Routes>
           </ApiErrProvider>
-        </HashRouter>
+        </BrowserRouter>
         
       </div>
     </ThemeProvider>
