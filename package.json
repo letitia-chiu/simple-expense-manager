@@ -1,5 +1,6 @@
 {
-  "name": "sem",
+  "name": "simple-expense-manager",
+  "homepage": "https://letitia-chiu.github.io/simple-expense-manager/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
