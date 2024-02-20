@@ -11,9 +11,21 @@ A straightforward web app designed to help you manage your daily expenses.
 - Users can view monthly financial reports.
 - Users can switch between light and dark mode.
 
-### Live Site URL
+### Live Site URL & Back-End Repository
+- Live Site URL: [Simple Expense Manager](https://letitia-chiu.github.io/simple-expense-manager)
+- Back-End Repository: [Simple Expense Manager API](https://github.com/letitia-chiu/simple-expense-manager-api)
 
-[Simple Expense Manager](https://letitia-chiu.github.io/simple-expense-manager)
+### Test account
+- Account 1 (user1):
+  ```
+  email : user1@example.com 
+  password: 12345678
+  ```
+- Account 2 (user2):
+  ```
+  email : user2@example.com 
+  password: 12345678
+  ```
 
 ## Development Tools & Resources
 - [React(v8.2.0) with Vite](https://vitejs.dev/) - JavaScript library
