@@ -4,6 +4,7 @@ const DonutChart = ({ labels, series }) => {
   const options = {
     labels: labels || [],
     chart: {
+      foreColor: ({ theme }) => theme.mainTextColor,
       width: '100%'
     },
     legend: {

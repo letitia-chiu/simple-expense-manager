@@ -1,5 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Button, Stack } from '@chakra-ui/react'
 import Swal from 'sweetalert2'
@@ -13,6 +12,7 @@ import PlainHeader from '../components/PlainHeader'
 const Wrapper = styled.div`
   flex: 1;
   width: 95%;
+  max-width: 500px;
   margin-top: 10px;
   margin-bottom: 130px;
   display: flex;
@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   }
 `
 
-function SettingPage({ isMobile }) {
+function SettingPage({ isMobile, switchTheme, theme }) {
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -43,12 +43,6 @@ function SettingPage({ isMobile }) {
       }
     })
   }
-  
-  useEffect(() => {
-    if (!isMobile) {
-      navigate('/category')
-    }
-  }, [isMobile])
 
   return (
     <Container>
@@ -56,11 +50,18 @@ function SettingPage({ isMobile }) {
       <PlainHeader page="setting"/>
       <Wrapper>
         <Stack w='90%' my={3} spacing={8}>
-          <Button 
+          {isMobile && 
+            <Button 
             colorScheme='purple'
             variant='outline'
             onClick={() => navigate('/category')}
           >Category</Button>
+          }
+          <Button 
+            colorScheme='purple'
+            variant='outline'
+            onClick={switchTheme}
+          >{theme === 'light' ? 'Dark' : 'Light'} mode</Button>
           <Button 
             colorScheme='gray'
             onClick={handleLogout}

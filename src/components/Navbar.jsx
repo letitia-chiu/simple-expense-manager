@@ -129,7 +129,8 @@ function Navbar({ isMobile, page }) {
         <NavTab isActive={page === 'income'} type="income"/>
         <NavTab isActive={page === 'expense'} type="expense"/>
         <NavTab isActive={page === 'report'} type="report"/>
-        {isMobile ? <NavTab isActive={page === 'category'} type="setting"/> : <NavTab isActive={page === 'category'} type="category"/> }
+        {!isMobile && <NavTab isActive={page === 'category'} type="category"/> }
+        <NavTab isActive={page === 'setting' || (isMobile && page === 'category')} type="setting"/>
       </Tabs>
       <UserLogout onClick={() => handleLogout()}>
         <LogoutIcon />

@@ -17,6 +17,7 @@ import DonutChart from '../components/DonutChart'
 const Wrapper = styled.div`
   flex: 1;
   width: 95%;
+  max-width: 1000px;
   margin-top: 10px;
   margin-bottom: 130px;
   overflow-y: scroll;

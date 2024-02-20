@@ -14,24 +14,20 @@ export const ApiErrProvider = ({ children }) => {
   const navigate = useNavigate()
 
   const apiErrorHandler = (res, errTitle) => {
-    try {
-      const isUnauthorized = res.status === 401
-      let title = ''
-      if (isUnauthorized) {
-        title = 'Please login'
-      } else {
-        title = errTitle || 'Loading Failed'
-      }
-      const text = res.message || ''
-    
-      // Show error toast
-      toast('error', title, text)
-    
-      // If status is 401 (Unauthorized), redirect to login
-      if (res.status === 401) return navigate('/login')
-    } catch (err) {
-      throw err
+    const isUnauthorized = res.status ? res.status === 401 : false
+    let title = ''
+    if (isUnauthorized) {
+      title = 'Please login'
+    } else {
+      title = errTitle || 'Loading Failed'
     }
+    const text = res.message || ''
+  
+    // Show error toast
+    toast('error', title, text)
+  
+    // If status is 401 (Unauthorized), redirect to login
+    if (res.status === 401) return navigate('/login')
   }
 
   return (

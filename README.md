@@ -1,8 +1,31 @@
-# React + Vite
+# Simple Expense Manager
+A straightforward web app designed to help you manage your daily expenses.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+### Features
+- Users can register (feature not yet available), login, and logout.
+- Users can view income and expense records for each month.
+- Users can add, view, edit, and delete individual income or expense records.
+- Users can add, view, edit, and delete income or expense categories.
+- Users can view monthly financial reports.
+- Users can switch between light and dark mode.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Live Site URL
+
+[Simple Expense Manager](https://letitia-chiu.github.io/simple-expense-manager)
+
+## Development Tools & Resources
+- [React(v8.2.0) with Vite](https://vitejs.dev/) - JavaScript library
+- [React Router DOM](https://reactrouter.com/en/main) - Pages management
+- [Axios](https://www.npmjs.com/package/axios) - Data fetching from API
+- [Emotion](https://emotion.sh/docs/styled) - Creating styled components
+
+### UI Resources
+- [Font Awesome](https://fontawesome.com/icons)
+- [Chakra UI](https://chakra-ui.com/)
+- [SweetAlert2](https://sweetalert2.github.io/)
+- [ApexCharts](https://apexcharts.com/react-chart-demos/pie-charts/simple-donut/)
+
+## Author
+[Letitia Chiu](https://github.com/letitia-chiu)

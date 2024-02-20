@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { ThemeProvider } from '@emotion/react'
-import theme from './utils/theme'
+import { theme } from './utils/theme'
 import { HashRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { ApiErrProvider } from './utils/ApiErrorContext'
+import { useColorMode } from '@chakra-ui/react'
 
 // Views
 import RecordListPage from './views/RecordListPage'
@@ -16,6 +17,18 @@ import ReportPage from './views/ReportPage'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
+  const [currentTheme, setCurrentTheme] = useState(() => localStorage.getItem('theme') || 'light')
+  const { colorMode, toggleColorMode } = useColorMode()
+
+  const handleThemeSwitch = () => {
+    const theme = colorMode === 'light' ? 'dark' : 'light'
+    if (currentTheme !== colorMode) {
+      toggleColorMode()
+    }
+    setCurrentTheme(theme)
+    toggleColorMode()
+    localStorage.setItem('theme', theme)
+  }
   
   // ** Screen size check
   useEffect(() => {
@@ -33,7 +46,7 @@ function App() {
   }, [])
 
   return (
-    <ThemeProvider theme={theme.light}>
+    <ThemeProvider theme={theme[currentTheme]}>
       <div className="App">
         <HashRouter>
           <ApiErrProvider>
@@ -80,7 +93,7 @@ function App() {
               />
               <Route
                 path='/setting'
-                element={<SettingPage isMobile={isMobile}/>}
+                element={<SettingPage isMobile={isMobile} switchTheme={handleThemeSwitch} theme={currentTheme} />}
               />
               <Route
                 path='/report'
