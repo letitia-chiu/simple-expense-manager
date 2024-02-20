@@ -48,7 +48,7 @@ function RecordListPage({ type, isMobile }) {
 
   // ** Get records from API when page first loads
   useEffect(() => {
-    const date = month || new Date()
+    const date = month || dayjs()
     getRecordsAsync(type, date)
   }, [type])
 
