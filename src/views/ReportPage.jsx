@@ -191,7 +191,7 @@ function ReportPage ({ isMobile }) {
 
   // ** Get records from API when page first loads
   useEffect(() => {
-    const date = month || new Date()
+    const date = month ? dayjs(month, 'MMM YYYY') : dayjs()
     getReportAsync(date)
   }, [])
 
