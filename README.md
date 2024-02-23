@@ -4,7 +4,7 @@ A straightforward web app designed to help you manage your daily expenses.
 ## Overview
 
 ### Features
-- Users can register (feature not yet available), login, and logout.
+- Users can register, login, and logout.
 - Users can view income and expense records for each month.
 - Users can add, view, edit, and delete individual income or expense records.
 - Users can add, view, edit, and delete income or expense categories.
