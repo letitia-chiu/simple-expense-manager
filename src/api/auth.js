@@ -47,3 +47,25 @@ export const authCheck = async () => {
     return { success: false, message, status}
   }
 }
+
+export const register = async (payload) => {
+  try {
+    const url = baseUrl + '/register'
+    const { data } = await axios.post(url, payload)
+    const { user } = data
+
+    // Return result
+    if (user) {
+      return { success: true }
+    } else {
+      return { success: false, message: 'Failed to get user data after register' }
+    }
+  } catch (err) {
+    console.error('[Register failed]: ', err)
+
+    // Return error message
+    const status = err.response.status
+    const message = err.response.data.message
+    return { success: false, message, status}
+  }
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { login, authCheck } from '../api/auth'
+import { register, authCheck } from '../api/auth'
 import { useApiErr } from '../utils/ApiErrorContext'
 import styled from '@emotion/styled'
 import Container from '../components/Container'
@@ -22,7 +22,7 @@ const Header = styled.div`
   text-align: center;
 `
 
-const LoginTitle = styled.div`
+const RegisterTitle = styled.div`
   height: 60px;
   border-bottom: 1px solid ${({ theme }) => theme.mainTextColor};
   color: ${({ theme }) => theme.mainColor};
@@ -34,28 +34,33 @@ const LoginTitle = styled.div`
 
 // ******** Main Function ******** //
 
-function LoginPage() {
+function RegisterPage() {
   // ** useState & variables
   const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
   const [password, setPassword] = useState('')
-  const inputComplete = email && password
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const inputComplete = email && name && password && confirmPassword
+  const passwordMatch = password === confirmPassword
   const navigate = useNavigate()
   const { apiErrorHandler } = useApiErr()
 
-  // ** Login function
-  const handleLogin = async () => {
+  // ** Register function
+  const handleRegister = async () => {
     // Validate user input
-    if (!inputComplete) return 
+    if (!inputComplete) return
+    if (!passwordMatch) return
 
-    // Login
+    // Register
+    const payload = { name, email, password, confirmPassword }
     try {
-      const res = await login(email, password)
+      const res = await register(payload)
 
       if (res.success) {
-        toast('success', 'Login Success')
-        return navigate('/income')
+        toast('success', 'Register Success')
+        return navigate('/login')
       } else {
-        apiErrorHandler(res, 'Login Failed')
+        apiErrorHandler(res, 'Register Failed')
       }
     } catch (err) {
       toast('error', err)
@@ -80,7 +85,7 @@ function LoginPage() {
     <Container>
       <Header>Simple Expense Manager</Header>
       <Stack my={5} w='80%' maxW='500px' spacing={5}>
-        <LoginTitle>Login</LoginTitle>
+        <RegisterTitle>Register</RegisterTitle>
 
         <FormControl>
           <FormLabel>E-mail:</FormLabel>
@@ -89,6 +94,16 @@ function LoginPage() {
             placeholder='Enter your e-mail'
             value={email}
             onChange={e => setEmail(e.target.value)}
+          />
+        </FormControl>
+
+        <FormControl>
+          <FormLabel>Username:</FormLabel>
+          <Input 
+            type='text'
+            placeholder='Enter your username'
+            value={name}
+            onChange={e => setName(e.target.value)}
           />
         </FormControl>
 
@@ -102,27 +117,37 @@ function LoginPage() {
           />
         </FormControl>
 
+        <FormControl isInvalid={!passwordMatch}>
+          <FormLabel>Confirm Password:</FormLabel>
+          <Input
+            type='password'
+            placeholder='Enter password again'
+            value={confirmPassword}
+            onChange={e => setConfirmPassword(e.target.value)}
+          />
+          <FormErrorMessage><InfoOutlineIcon mr={2}/>Passwords do not match</FormErrorMessage>
+        </FormControl>
+
         <FormControl isInvalid={!inputComplete}>
-          <FormErrorMessage><InfoOutlineIcon mr={2}/>Please enter your email & password</FormErrorMessage>
+          <FormErrorMessage><InfoOutlineIcon mr={2}/>Email, username, password are required</FormErrorMessage>
         </FormControl>
 
         <Button
           colorScheme='purple'
-          onClick={handleLogin}
-          isDisabled={!inputComplete}
-        >Login</Button>
+          onClick={handleRegister}
+          isDisabled={!inputComplete || !passwordMatch}
+        >Register</Button>
 
         <Text>
-          No account?{' '}
-          <Link color='teal.500' onClick={() => navigate('/register')}>
-            Register
+          Already have an account?{' '}
+          <Link color='teal.500' onClick={() => navigate('/login')}>
+            Login
           </Link>
         </Text>
-
 
       </Stack>
     </Container>
   )
 }
 
-export default LoginPage
+export default RegisterPage

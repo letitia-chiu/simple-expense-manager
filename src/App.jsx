@@ -14,6 +14,7 @@ import CategoryPage from './views/CategoryPage'
 import CategoryFormPage from './views/CategoryFormPage'
 import SettingPage from './views/SettingPage'
 import ReportPage from './views/ReportPage'
+import RegisterPage from './views/RegisterPage'
 
 function App() {
   const [isMobile, setIsMobile] = useState(false)
@@ -51,6 +52,10 @@ function App() {
         <HashRouter>
           <ApiErrProvider>
             <Routes>
+              <Route
+                path="/register"
+                element={<RegisterPage />}
+              />
               <Route
                 path="/login"
                 element={<LoginPage />}
