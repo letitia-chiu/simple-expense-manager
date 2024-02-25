@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import { FormattedMessage } from 'react-intl'
 
 const Wrapper = styled.div`
-  width: 70px;
+  width: 80px;
   height: 70px;
   display: flex;
   flex-direction: column;
