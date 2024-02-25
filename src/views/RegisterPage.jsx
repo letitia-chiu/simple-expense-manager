@@ -36,7 +36,7 @@ const RegisterTitle = styled.div`
 `
 
 const LangWrapper = styled.div`
-  width: 150px;
+  width: 260px;
   align-self: center;
 `
 
