@@ -4,6 +4,7 @@ import { useApiErr } from '../utils/ApiErrorContext'
 import { toast } from '../utils/helpers'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import styled from '@emotion/styled'
+import { FormattedMessage } from 'react-intl'
 
 // Components
 import Container from '../components/Container'
@@ -62,8 +63,12 @@ function CategoryPage ({ isMobile }) {
       <Wrapper>
         <Tabs isFitted variant='soft-rounded' colorScheme='purple' w='95%' maxW='960px'>
           <TabList mb={1} mt={5} position='sticky'>
-            <Tab onClick={() => setTab('income')}>Income</Tab>
-            <Tab onClick={() => setTab('expense')}>Expense</Tab>
+            <Tab onClick={() => setTab('income')}>
+              <FormattedMessage id="income" defaultMessage="Income" />
+            </Tab>
+            <Tab onClick={() => setTab('expense')}>
+              <FormattedMessage id="expense" defaultMessage="Expense" />
+            </Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -75,7 +80,9 @@ function CategoryPage ({ isMobile }) {
           </TabPanels>
         </Tabs>
       </Wrapper>
-      <CreateButton link="/category/create" title="Add Category"/>
+      <FormattedMessage id="addCategory" defaultMessage="Add Category">
+        {msg => <CreateButton link="/category/create" title={msg}/>}
+      </FormattedMessage>  
     </Container>
   )
 }

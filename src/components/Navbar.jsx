@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from '../utils/helpers'
 import Swal from 'sweetalert2'
+import toastMsg from '../utils/toast-messages'
+import { FormattedMessage } from 'react-intl'
 
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.foregroundColor};
@@ -82,20 +84,22 @@ function Navbar({ isMobile, page }) {
   const [user, setUser] = useState(() => currentUser || null)
   const { apiErrorHandler } = useApiErr()
   const navigate = useNavigate()
+  const locale = localStorage.getItem('lang')
 
   const handleLogout = () => {
     Swal.fire({
-      title: 'Logout?',
+      title: toastMsg.logout[locale]?.title || 'Logout?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Logout'
+      confirmButtonText: toastMsg.logout[locale]?.logout || 'Logout',
+      cancelButtonText: toastMsg.logout[locale]?.cancel || 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem('authToken')
         localStorage.removeItem('currentUser')
-        toast('success', "You've logout!")
+        toast('success', toastMsg.logout[locale]?.success || "You've logout!")
         navigate('/login')
       }
     })
@@ -124,7 +128,12 @@ function Navbar({ isMobile, page }) {
 
   return (
     <Wrapper>
-      <Navbrand>Simple Expense Manager</Navbrand>
+      <Navbrand>
+        <FormattedMessage
+          id="app.title"
+          defaultMessage="Simple Expense Manager"
+        />
+      </Navbrand>
       <Tabs>
         <NavTab isActive={page === 'income'} type="income"/>
         <NavTab isActive={page === 'expense'} type="expense"/>
@@ -134,7 +143,7 @@ function Navbar({ isMobile, page }) {
       </Tabs>
       <UserLogout onClick={() => handleLogout()}>
         <LogoutIcon />
-        <p>{user && `Hi, ${user}`}</p>
+        {user && <p><FormattedMessage id="greet"/>{user}</p>}
       </UserLogout>
     </Wrapper>
   )

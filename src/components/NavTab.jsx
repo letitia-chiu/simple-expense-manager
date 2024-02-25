@@ -5,6 +5,7 @@ import ReportIcon from '../assets/report.svg?react'
 import SettingIcon from '../assets/setting.svg?react'
 import CategoryIcon from '../assets/category.svg?react'
 import { Link } from 'react-router-dom'
+import { FormattedMessage } from 'react-intl'
 
 const Wrapper = styled.div`
   width: 70px;
@@ -44,11 +45,11 @@ const tabIcon = {
 }
 
 const tabTitle = {
-  income: 'Income',
-  expense: 'Expense',
-  report: 'Report',
-  setting: 'Setting',
-  category: 'Categories'
+  income: <FormattedMessage id="income" defaultMessage="Income" />,
+  expense: <FormattedMessage id="expense" defaultMessage="Expense" />,
+  report: <FormattedMessage id="report" defaultMessage="Report" />,
+  setting: <FormattedMessage id="setting" defaultMessage="Setting" />,
+  category: <FormattedMessage id="categories" defaultMessage="Categories" />
 }
 
 const tabLink = {

@@ -10,6 +10,9 @@ import {
 } from '@chakra-ui/react'
 import { InfoOutlineIcon } from '@chakra-ui/icons'
 import { toast } from '../utils/helpers'
+import { FormattedMessage } from 'react-intl'
+import LanguageSelector from '../components/LanguageSelector'
+import toastMsg from '../utils/toast-messages'
 
 const Header = styled.div`
   background-color: ${({ theme }) => theme.foregroundColor};
@@ -32,9 +35,14 @@ const RegisterTitle = styled.div`
   text-align: center;
 `
 
+const LangWrapper = styled.div`
+  width: 150px;
+  align-self: center;
+`
+
 // ******** Main Function ******** //
 
-function RegisterPage() {
+function RegisterPage({ locale, setLocale }) {
   // ** useState & variables
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
@@ -57,10 +65,10 @@ function RegisterPage() {
       const res = await register(payload)
 
       if (res.success) {
-        toast('success', 'Register Success')
+        toast('success', toastMsg.register[locale]?.success || 'Register Success')
         return navigate('/login')
       } else {
-        apiErrorHandler(res, 'Register Failed')
+        apiErrorHandler(res, toastMsg.register[locale]?.fail || 'Register Failed')
       }
     } catch (err) {
       toast('error', err)
@@ -83,68 +91,154 @@ function RegisterPage() {
   // ******** JSX return ******** //
   return (
     <Container>
-      <Header>Simple Expense Manager</Header>
+      <Header>
+        <FormattedMessage
+          id="app.title"
+          defaultMessage="Simple Expense Manager"
+        />
+      </Header>
       <Stack my={5} w='80%' maxW='500px' spacing={5}>
-        <RegisterTitle>Register</RegisterTitle>
+        <RegisterTitle>
+          <FormattedMessage
+            id="register"
+            defaultMessage="Register"
+          />
+        </RegisterTitle>
 
         <FormControl>
-          <FormLabel>E-mail:</FormLabel>
-          <Input 
-            type='email'
-            placeholder='Enter your e-mail'
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
+          <FormLabel>
+            <FormattedMessage
+              id="email.label"
+              defaultMessage="E-mail"
+            />:
+          </FormLabel>
+          <FormattedMessage 
+            id="email.placeholder"
+            defaultMessage="Enter your e-mail"
+          >
+            {msg => (
+              <Input 
+                type='email'
+                placeholder={msg}
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
+            )}
+          </FormattedMessage>
+        </FormControl>
+        
+        <FormControl>
+          <FormLabel>
+            <FormattedMessage
+              id="username.label"
+              defaultMessage="Username"
+            />:
+          </FormLabel>
+          <FormattedMessage 
+            id="username.placeholder"
+            defaultMessage="Enter your username"
+          >
+            {msg => (
+              <Input 
+                type='text'
+                placeholder={msg}
+                value={name}
+                onChange={e => setName(e.target.value)}
+              />
+            )}
+          </FormattedMessage>
         </FormControl>
 
         <FormControl>
-          <FormLabel>Username:</FormLabel>
-          <Input 
-            type='text'
-            placeholder='Enter your username'
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Password:</FormLabel>
-          <Input
-            type='password'
-            placeholder='Enter your password'
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
+          <FormLabel>
+            <FormattedMessage
+              id="password.label"
+              defaultMessage="Password"
+            />:
+          </FormLabel>
+          <FormattedMessage 
+            id="password.placeholder"
+            defaultMessage="Enter your password"
+          >
+            {msg => (
+              <Input 
+                type='password'
+                placeholder={msg}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            )}
+          </FormattedMessage>
         </FormControl>
 
         <FormControl isInvalid={!passwordMatch}>
-          <FormLabel>Confirm Password:</FormLabel>
-          <Input
-            type='password'
-            placeholder='Enter password again'
-            value={confirmPassword}
+          <FormLabel>
+            <FormattedMessage
+              id="confirmPw.label"
+              defaultMessage="Confirm Password"
+            />:
+          </FormLabel>
+          <FormattedMessage 
+            id="confirmPw.placeholder"
+            defaultMessage="Enter password again"
+          >
+            {msg => (
+              <Input 
+                type='password'
+                placeholder={msg}
+                value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
-          />
-          <FormErrorMessage><InfoOutlineIcon mr={2}/>Passwords do not match</FormErrorMessage>
+              />
+            )}
+          </FormattedMessage>
+          <FormErrorMessage>
+            <FormErrorMessage>
+            <InfoOutlineIcon mr={2}/>
+            <FormattedMessage
+              id="register.formMsg.notMatch"
+              defaultMessage="Passwords do not match"     
+            />
+          </FormErrorMessage>
+          </FormErrorMessage>
         </FormControl>
 
         <FormControl isInvalid={!inputComplete}>
-          <FormErrorMessage><InfoOutlineIcon mr={2}/>Email, username, password are required</FormErrorMessage>
+          <FormErrorMessage>
+            <InfoOutlineIcon mr={2}/>
+            <FormattedMessage
+              id="register.formMsg.incomplete"
+              defaultMessage="Email, username, password are required"     
+            />
+          </FormErrorMessage>
         </FormControl>
 
         <Button
           colorScheme='purple'
           onClick={handleRegister}
           isDisabled={!inputComplete || !passwordMatch}
-        >Register</Button>
+        >
+          <FormattedMessage
+            id="register"
+            defaultMessage="Register"
+          />
+        </Button>
 
         <Text>
-          Already have an account?{' '}
+          <FormattedMessage
+            id="register.haveAccount"
+            defaultMessage="Already have an account?"     
+          />{' '}
           <Link color='teal.500' onClick={() => navigate('/login')}>
-            Login
+            <FormattedMessage
+              id="login"
+              defaultMessage="Login"
+            />
           </Link>
         </Text>
-
+        
+        <LangWrapper>
+          <LanguageSelector locale={locale} setLocale={setLocale}/>
+        </LangWrapper>
       </Stack>
     </Container>
   )

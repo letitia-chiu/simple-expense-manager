@@ -8,6 +8,7 @@ import {
   HeaderTitle,
   HeaderSubtitle
 } from './header-parts'
+import { FormattedMessage } from 'react-intl'
 
 const MonthSwitch = styled.div`
   display: flex;
@@ -33,9 +34,9 @@ const MonthSwitch = styled.div`
 `
 
 const pageTitle = {
-  income: "Income",
-  expense: "Expense",
-  report: "Report"
+  income: <FormattedMessage id="income" defaultMessage="Income" />,
+  expense: <FormattedMessage id="expense" defaultMessage="Expense" />,
+  report: <FormattedMessage id="report" defaultMessage="Report" />,
 }
 
 function MonthlyHeader({ isMobile, page, month, switchMonth }) {
@@ -46,7 +47,7 @@ function MonthlyHeader({ isMobile, page, month, switchMonth }) {
           onClick={() => switchMonth?.('prev')}
         >
           <PrevIcon />
-          {!isMobile && 'prev month'}
+          {!isMobile && <FormattedMessage id="prevMonth" defaultMessage="prev month"/>}
         </MonthSwitch>
 
         <HeaderTitleWrapper>
@@ -57,7 +58,7 @@ function MonthlyHeader({ isMobile, page, month, switchMonth }) {
         <MonthSwitch
           onClick={() => switchMonth?.('next')}
         >
-          {!isMobile && 'next month'}
+          {!isMobile && <FormattedMessage id="nextMonth" defaultMessage="next month"/>}
           <NextIcon />
         </MonthSwitch>
       </HeaderContent>

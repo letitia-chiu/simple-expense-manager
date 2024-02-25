@@ -3,11 +3,14 @@ import styled from '@emotion/styled'
 import { Button, Stack } from '@chakra-ui/react'
 import Swal from 'sweetalert2'
 import { toast } from '../utils/helpers'
+import toastMsg from '../utils/toast-messages'
+import { FormattedMessage } from 'react-intl'
 
 // Components
 import Container from '../components/Container'
 import Navbar from '../components/Navbar'
 import PlainHeader from '../components/PlainHeader'
+import LanguageSelector from '../components/LanguageSelector'
 
 const Wrapper = styled.div`
   flex: 1;
@@ -23,22 +26,23 @@ const Wrapper = styled.div`
   }
 `
 
-function SettingPage({ isMobile, switchTheme, theme }) {
+function SettingPage({ isMobile, switchTheme, theme, locale, setLocale }) {
   const navigate = useNavigate()
 
   const handleLogout = () => {
     Swal.fire({
-      title: 'Logout?',
+      title: toastMsg.logout[locale]?.title || 'Logout?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Logout'
+      confirmButtonText: toastMsg.logout[locale]?.logout || 'Logout',
+      cancelButtonText: toastMsg.logout[locale]?.cancel || 'Cancel'
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem('authToken')
         localStorage.removeItem('currentUser')
-        toast('success', "You've logout!")
+        toast('success', toastMsg.logout[locale]?.success || "You've logout!")
         navigate('/login')
       }
     })
@@ -55,17 +59,22 @@ function SettingPage({ isMobile, switchTheme, theme }) {
             colorScheme='purple'
             variant='outline'
             onClick={() => navigate('/category')}
-          >Category</Button>
+          >
+            <FormattedMessage id="categories" defaultMessage="Categories"/>
+          </Button>
           }
           <Button 
             colorScheme='purple'
             variant='outline'
             onClick={switchTheme}
-          >{theme === 'light' ? 'Dark' : 'Light'} mode</Button>
+          >{theme === 'light' ? <FormattedMessage id="mode.dark" defaultMessage="Dark mode"/> : <FormattedMessage id="mode.light" defaultMessage="Light mode"/>}</Button>
+          <LanguageSelector locale={locale} setLocale={setLocale} size='md'/>
           <Button 
             colorScheme='gray'
             onClick={handleLogout}
-          >Logout</Button>
+          >
+            <FormattedMessage id="logout" defaultMessage="Logout"/>
+          </Button>
         </Stack>
       </Wrapper>
     </Container>

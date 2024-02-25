@@ -7,6 +7,7 @@ import { toast } from '../utils/helpers'
 import { 
   Table, Thead, Tbody, Tr, Th, Td, TableContainer, Divider
 } from '@chakra-ui/react'
+import { FormattedMessage } from 'react-intl'
 
 // Components
 import Container from '../components/Container'
@@ -69,8 +70,8 @@ const ChartTable = ({ data }) => {
       <Table variant='simple'>
           <Thead>
             <Tr>
-              <Th>Category</Th>
-              <Th>Total Amount</Th>
+              <Th><FormattedMessage id="col.category" defaultMessage="Category"/></Th>
+              <Th><FormattedMessage id="col.total" defaultMessage="Total"/></Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -129,15 +130,21 @@ const Summary = ({ data }) => {
   return (
     <SummaryWrapper>
       <SummaryItem>
-        <SummaryTitle>Total Income</SummaryTitle>
+        <SummaryTitle>
+          <FormattedMessage id="total.income" defaultMessage="Total Income"/>
+        </SummaryTitle>
         <SummaryText>{data?.income.total}</SummaryText>
       </SummaryItem>
       <SummaryItem>
-        <SummaryTitle>Total Expense</SummaryTitle>
+        <SummaryTitle>
+          <FormattedMessage id="total.expense" defaultMessage="Total Expense"/>
+        </SummaryTitle>
         <SummaryText>{data?.expense.total}</SummaryText>
       </SummaryItem>
       <SummaryItem className='balance'>
-        <SummaryTitle>Balance</SummaryTitle>
+        <SummaryTitle>
+          <FormattedMessage id="balance" defaultMessage="Balance"/>
+        </SummaryTitle>
         <SummaryText>{data?.balance}</SummaryText>
       </SummaryItem>
     </SummaryWrapper>
@@ -203,13 +210,17 @@ function ReportPage ({ isMobile }) {
         <Summary data={report} />
         <ChartGroup>
           <Chart>
-            <ChartTitle>Income</ChartTitle>
+            <ChartTitle>
+              <FormattedMessage id="income" defaultMessage="Income"/>
+            </ChartTitle>
             <Divider w='90%' mb={3}/>
             <DonutChart labels={incomeCategories} series={incomeSums}/>
             <ChartTable data={report?.income.sumByCategory} />
           </Chart>
           <Chart>
-            <ChartTitle>Expense</ChartTitle>
+            <ChartTitle>
+              <FormattedMessage id="expense" defaultMessage="Expense"/>
+            </ChartTitle>
             <Divider w='90%' mb={3}/>
             <DonutChart labels={expenseCategories} series={expenseSums}/>
             <ChartTable data={report?.expense.sumByCategory} />

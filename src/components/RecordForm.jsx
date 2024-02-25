@@ -12,6 +12,8 @@ import {
   Button, ButtonGroup, IconButton, Stack
 } from '@chakra-ui/react'
 import { CheckIcon, CloseIcon, DeleteIcon, InfoOutlineIcon } from '@chakra-ui/icons'
+import { FormattedMessage } from 'react-intl'
+import toastMsg from '../utils/toast-messages'
 
 const Wrapper = styled.div`
   flex: 1;
@@ -36,6 +38,7 @@ const Wrapper = styled.div`
 function RecordForm({ type, recordId }) {
   const navigate = useNavigate()
   const { apiErrorHandler } = useApiErr()
+  const locale = localStorage.getItem('lang') || 'en'
 
   // ** Input useState
   const [categories, setCategories] = useState([])
@@ -43,7 +46,7 @@ function RecordForm({ type, recordId }) {
   const [title, setTitle] = useState('')
   const [categoryId, setCategoryId] = useState('')
   const [amount, setAmount] = useState('')
-  const inputComplete = title && amount
+  const inputComplete = title && amount && !isNaN(amount)
 
   // ** Async functions
   const getRecordAsync = async () => {
@@ -89,10 +92,10 @@ function RecordForm({ type, recordId }) {
       payload.isIncome = type === 'income'
       const res = await postRecord(payload)
       if (res.success) {
-        toast('success', 'Add record successfully')
+        toast('success', toastMsg.add[locale]?.success || 'Add successfully')
         return navigate(`/${type}`)
       } else {
-        apiErrorHandler(res, 'Failed to add record')
+        apiErrorHandler(res, toastMsg.add[locale]?.fail || 'Failed to add')
       }
     } catch (err) {
       toast('error', err)
@@ -103,10 +106,10 @@ function RecordForm({ type, recordId }) {
     try {
       const res = await patchRecord(recordId, payload)
       if (res.success) {
-        toast('success', 'Edit record successfully')
+        toast('success', toastMsg.edit[locale]?.success || 'Edit successfully')
         return navigate(`/${type}`)
       } else {
-        apiErrorHandler(res, 'Failed to edit record')
+        apiErrorHandler(res, toastMsg.edit[locale]?.fail || 'Failed to edit')
       }
     } catch (err) {
       toast('error', err)
@@ -117,10 +120,10 @@ function RecordForm({ type, recordId }) {
     try {
       const res = await deleteRecord(id)
       if (res.success) {
-        toast('success', 'Delete record successfully')
+        toast('success', toastMsg.delete[locale]?.success || 'Delete successfully')
         return navigate(`/${type}`)
       } else {
-        apiErrorHandler(res, 'Failed to delete record')
+        apiErrorHandler(res, toastMsg.delete[locale]?.fail || 'Failed to delete')
       }
     } catch (err) {
       toast('error', err)
@@ -131,6 +134,7 @@ function RecordForm({ type, recordId }) {
   const handleSave = () => {
     // Validate user input
     if (!inputComplete) return
+    if (isNaN(amount)) return
 
     // Pack user input
     const payload = { date, title, amount, categoryId }
@@ -158,7 +162,9 @@ function RecordForm({ type, recordId }) {
     <Wrapper>
       <Stack w='90%' my={3} spacing={5}>
         <FormControl>
-          <FormLabel>Date</FormLabel>
+          <FormLabel>
+            <FormattedMessage id="col.date" defaultMessage="Date"/>
+          </FormLabel>
           <Input
             type='date'
             value={date}
@@ -167,40 +173,72 @@ function RecordForm({ type, recordId }) {
         </FormControl>
 
         <FormControl>
-          <FormLabel>Title</FormLabel>
-          <Input
-            type='text'
-            placeholder='Enter title'
-            value={title}
-            onChange={e => setTitle(e.target.value)}
-          />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Category</FormLabel>
-          <Select
-            placeholder='Select category'
-            value={categoryId}
-            onChange={e => setCategoryId(e.target.value)}
+          <FormLabel>
+            <FormattedMessage id="col.title" defaultMessage="Title"/>
+          </FormLabel>
+          <FormattedMessage 
+            id="title.placeholder"
+            defaultMessage="Enter title"
           >
-            {categories.map(c => (
-              <option key={c.id} value={c.id}>{c.name}</option>
-            ))}
-          </Select>
+            {msg => (
+              <Input 
+                type='text'
+                placeholder={msg}
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+              />
+            )}
+          </FormattedMessage>
         </FormControl>
 
         <FormControl>
-          <FormLabel>Amount</FormLabel>
-          <NumberInput value={amount}>
-            <NumberInputField
-              placeholder='Enter amount'
-              onChange={e => setAmount(e.target.value)}
-            />
-          </NumberInput>
+          <FormLabel>
+            <FormattedMessage id="col.category" defaultMessage="Category"/>
+          </FormLabel>
+          <FormattedMessage 
+            id="category.placeholder"
+            defaultMessage="Select category"
+          >
+            {msg => (
+              <Select
+                placeholder={msg}
+                value={categoryId}
+                onChange={e => setCategoryId(e.target.value)}
+              >
+                {categories.map(c => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </Select>
+            )}
+          </FormattedMessage>
+          
+        </FormControl>
+
+        <FormControl isInvalid={isNaN(amount)}>
+          <FormLabel>
+            <FormattedMessage id="col.amount" defaultMessage="Amount"/>
+          </FormLabel>
+          <FormattedMessage id="amount.placeholder" defaultMessage="Enter amount">
+            {msg => (
+              <NumberInput value={amount}>
+                <NumberInputField
+                  placeholder={msg}
+                  onChange={e => setAmount(e.target.value)}
+                />
+              </NumberInput>
+            )}
+          </FormattedMessage>
+          <FormErrorMessage>
+            <InfoOutlineIcon mr={2}/>
+            <FormattedMessage id="recordForm.msg.nan" defaultMessage="Amount should be number"/>
+          </FormErrorMessage>
         </FormControl>
 
         <FormControl isInvalid={!inputComplete}>
-          <FormErrorMessage><InfoOutlineIcon mr={2}/>Title & amount is required</FormErrorMessage>
+          <FormErrorMessage>
+            <InfoOutlineIcon mr={2}/>
+            <FormattedMessage id="recordForm.msg.incomplete" defaultMessage="Title & amount is required"/>
+          </FormErrorMessage>
         </FormControl>
 
         <ButtonGroup justifyContent='end' spacing={5} mt={5}>
@@ -209,7 +247,7 @@ function RecordForm({ type, recordId }) {
             aria-label='Delete'
             icon={<DeleteIcon />}
             mr={5}
-            onClick={() => handleDelete?.(recordId, deleteRecordAsync)}
+            onClick={() => handleDelete?.(recordId, deleteRecordAsync, locale)}
           />}
           <Button 
             leftIcon={<CheckIcon />}
@@ -218,7 +256,7 @@ function RecordForm({ type, recordId }) {
             onClick={handleSave}
             isDisabled={!inputComplete}
           >
-            Save
+            <FormattedMessage id="save" defaultMessage="Save"/>
           </Button>
           <Button 
             leftIcon={<CloseIcon />}
@@ -226,7 +264,7 @@ function RecordForm({ type, recordId }) {
             variant='outline'
             onClick={() => navigate(-1)}
           >
-            Cancel
+            <FormattedMessage id="cancel" defaultMessage="Cancel"/>
           </Button>
         </ButtonGroup>
       </Stack>

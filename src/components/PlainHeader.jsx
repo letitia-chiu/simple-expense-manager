@@ -4,14 +4,16 @@ import {
   HeaderTitleWrapper,
   HeaderTitle,
 } from './header-parts'
+import { FormattedMessage } from 'react-intl'
 
 const pageTitle = {
-  income: "Add New Income",
-  expense: "Add New Expense",
-  category: "Categories",
-  createCategory: "Add New Category",
-  editCategory: "Edit Category",
-  setting: "Setting"
+  edit: <FormattedMessage id="editRecord" defaultMessage="Edit Record"/>,
+  income: <FormattedMessage id="addIncome" defaultMessage="Add New Income"/>,
+  expense: <FormattedMessage id="addExpense" defaultMessage="Add New Expense"/>,
+  category: <FormattedMessage id="categories" defaultMessage="Categories"/>,
+  createCategory: <FormattedMessage id="addCategory" defaultMessage="Add Category"/>,
+  editCategory: <FormattedMessage id="editCategory" defaultMessage="Edit Category"/>,
+  setting: <FormattedMessage id="setting" defaultMessage="Setting"/>
 }
 
 function PlainHeader({ page, isEdit }) {
@@ -19,7 +21,7 @@ function PlainHeader({ page, isEdit }) {
     <HeaderWrapper>
       <HeaderContent>
         <HeaderTitleWrapper>
-          <HeaderTitle>{isEdit ? 'Edit Record' : pageTitle[page]}</HeaderTitle>
+          <HeaderTitle>{isEdit ? pageTitle.edit : pageTitle[page]}</HeaderTitle>
         </HeaderTitleWrapper>
       </HeaderContent>
     </HeaderWrapper>
