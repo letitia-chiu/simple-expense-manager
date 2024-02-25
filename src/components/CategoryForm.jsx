@@ -92,7 +92,7 @@ function CategoryForm({ categoryId }) {
 
   // ******** JSX return ******** //
   return (
-    <Stack w='90%' my={3} spacing={8}>
+    <Stack w='90%' maxW='960px' my={3} spacing={8}>
       <FormControl>
         <FormLabel>
           <FormattedMessage id="col.categoryName" defaultMessage="Category Name"/>
