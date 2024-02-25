@@ -46,7 +46,7 @@ const Tabs = styled.div`
   flex: 1;
   display: flex;
   justify-content: space-around;
-  max-width: 600px;
+  max-width: 700px;
 `
 
 const UserLogout = styled.div`
