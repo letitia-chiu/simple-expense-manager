@@ -533,7 +533,7 @@ For more details see https://formatjs.io/docs/getting-started/message-distributi
   flex: 1;
   display: flex;
   justify-content: space-around;
-  max-width: 600px;
+  max-width: 700px;
 `,X7=qe.div`
   color: ${({theme:e})=>e.mainTextColor};
   font-size: 16px;
