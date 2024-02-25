@@ -5,6 +5,12 @@ import { HashRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { ApiErrProvider } from './utils/ApiErrorContext'
 import { useColorMode } from '@chakra-ui/react'
 
+// Language resources
+import { IntlProvider } from 'react-intl'
+import en from './i18n/en.js'
+import zh from './i18n/zh.js'
+import ja from './i18n/ja.js'
+
 // Views
 import RecordListPage from './views/RecordListPage'
 import CreatePage from './views/CreatePage'
@@ -19,7 +25,23 @@ import RegisterPage from './views/RegisterPage'
 function App() {
   const [isMobile, setIsMobile] = useState(false)
   const [currentTheme, setCurrentTheme] = useState(() => localStorage.getItem('theme') || 'light')
+  const [locale, setLocale] = useState(() => localStorage.getItem('lang') || navigator.language)
   const { colorMode, toggleColorMode } = useColorMode()
+  
+  // ** Language setting
+  let messages
+  if (locale.includes('zh')) {
+    messages = zh
+  } else if (locale.includes('ja')) {
+    messages = ja
+  } else {
+    messages = en
+  }
+
+  const handleSetLocale = lang => {
+    setLocale(lang)
+    localStorage.setItem('lang', lang)
+  }
 
   const handleThemeSwitch = () => {
     const theme = colorMode === 'light' ? 'dark' : 'light'
@@ -47,6 +69,7 @@ function App() {
   }, [])
 
   return (
+    <IntlProvider locale={locale} key={locale} defaultLocale="en" messages={messages}>
     <ThemeProvider theme={theme[currentTheme]}>
       <div className="App">
         <HashRouter>
@@ -54,11 +77,11 @@ function App() {
             <Routes>
               <Route
                 path="/register"
-                element={<RegisterPage />}
+                element={<RegisterPage locale={locale} setLocale={handleSetLocale}/>}
               />
               <Route
                 path="/login"
-                element={<LoginPage />}
+                element={<LoginPage locale={locale} setLocale={handleSetLocale}/>}
               />
               <Route
                 path="/income/create"
@@ -98,7 +121,13 @@ function App() {
               />
               <Route
                 path='/setting'
-                element={<SettingPage isMobile={isMobile} switchTheme={handleThemeSwitch} theme={currentTheme} />}
+                element={<SettingPage 
+                  isMobile={isMobile} 
+                  switchTheme={handleThemeSwitch} 
+                  theme={currentTheme} 
+                  locale={locale}
+                  setLocale={handleSetLocale}
+                />}
               />
               <Route
                 path='/report'
@@ -114,6 +143,7 @@ function App() {
         
       </div>
     </ThemeProvider>
+    </IntlProvider>
   )
 }
 

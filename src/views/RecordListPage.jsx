@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import dayjs from 'dayjs'
 import { useState, useEffect } from 'react'
 import { getRecords } from '../api/record'
 import { toast } from '../utils/helpers'
 import { useApiErr } from '../utils/ApiErrorContext'
+import { FormattedMessage } from 'react-intl'
 
 // Components
 import Container from '../components/Container'
@@ -57,7 +59,10 @@ function RecordListPage({ type, isMobile }) {
       <Navbar isMobile={isMobile} page={type}/>
       <MonthlyHeader isMobile={isMobile} page={type} month={month} switchMonth={switchMonth}/>
       {isMobile ? <RecordList records={records}/> : <RecordTable records={records}/> }
-      <CreateButton link={`/${type}/create`} title="Add Record"/>
+      <FormattedMessage id="addRecord" defaultMessage="Add Record">
+        {msg => <CreateButton link={`/${type}/create`} title={msg}/>}
+      </FormattedMessage>
+      
     </Container>
   )
 }

@@ -10,6 +10,9 @@ import {
 } from '@chakra-ui/react'
 import { InfoOutlineIcon } from '@chakra-ui/icons'
 import { toast } from '../utils/helpers'
+import toastMsg from '../utils/toast-messages'
+import { FormattedMessage } from 'react-intl'
+import LanguageSelector from '../components/LanguageSelector'
 
 const Header = styled.div`
   background-color: ${({ theme }) => theme.foregroundColor};
@@ -20,6 +23,7 @@ const Header = styled.div`
   font-weight: 700;
   line-height: 60px;
   text-align: center;
+  position: relative;
 `
 
 const LoginTitle = styled.div`
@@ -32,9 +36,14 @@ const LoginTitle = styled.div`
   text-align: center;
 `
 
+const LangWrapper = styled.div`
+  width: 260px;
+  align-self: center;
+`
+
 // ******** Main Function ******** //
 
-function LoginPage() {
+function LoginPage({ locale, setLocale }) {
   // ** useState & variables
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -52,10 +61,10 @@ function LoginPage() {
       const res = await login(email, password)
 
       if (res.success) {
-        toast('success', 'Login Success')
+        toast('success', toastMsg.login[locale]?.success || 'Login Success')
         return navigate('/income')
       } else {
-        apiErrorHandler(res, 'Login Failed')
+        apiErrorHandler(res, toastMsg.login[locale]?.fail ||'Login Failed')
       }
     } catch (err) {
       toast('error', err)
@@ -78,48 +87,102 @@ function LoginPage() {
   // ******** JSX return ******** //
   return (
     <Container>
-      <Header>Simple Expense Manager</Header>
+      <Header>
+        <FormattedMessage
+          id="app.title"
+          defaultMessage="Simple Expense Manager"
+        />
+      </Header>
+
       <Stack my={5} w='80%' maxW='500px' spacing={5}>
-        <LoginTitle>Login</LoginTitle>
+        <LoginTitle>
+          <FormattedMessage
+            id="login"
+            defaultMessage="Login"
+          />
+        </LoginTitle>
 
         <FormControl>
-          <FormLabel>E-mail:</FormLabel>
-          <Input 
-            type='email'
-            placeholder='Enter your e-mail'
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
+          <FormLabel>
+            <FormattedMessage
+              id="email.label"
+              defaultMessage="E-mail"
+            />:
+          </FormLabel>
+          <FormattedMessage 
+            id="email.placeholder"
+            defaultMessage="Enter your e-mail"
+          >
+            {msg => (
+              <Input 
+                type='email'
+                placeholder={msg}
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
+            )}
+          </FormattedMessage>
         </FormControl>
 
         <FormControl>
-          <FormLabel>Password:</FormLabel>
-          <Input
-            type='password'
-            placeholder='Enter your password'
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
+          <FormLabel>
+            <FormattedMessage
+              id="password.label"
+              defaultMessage="Password"
+            />:
+          </FormLabel>
+          <FormattedMessage 
+            id="password.placeholder"
+            defaultMessage="Enter your password"
+          >
+            {msg => (
+              <Input 
+                type='password'
+                placeholder={msg}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+            )}
+          </FormattedMessage>
         </FormControl>
 
         <FormControl isInvalid={!inputComplete}>
-          <FormErrorMessage><InfoOutlineIcon mr={2}/>Please enter your email & password</FormErrorMessage>
+          <FormErrorMessage>
+            <InfoOutlineIcon mr={2}/>
+            <FormattedMessage
+              id="login.formMsg.incomplete"
+              defaultMessage="Please enter your email & password"     
+            />
+          </FormErrorMessage>
         </FormControl>
 
         <Button
           colorScheme='purple'
           onClick={handleLogin}
           isDisabled={!inputComplete}
-        >Login</Button>
+        >
+          <FormattedMessage
+            id="login"
+            defaultMessage="Login"
+          />
+        </Button>
 
         <Text>
-          No account?{' '}
+          <FormattedMessage
+            id="login.noAccount"
+            defaultMessage="No account?"     
+          />{' '}
           <Link color='teal.500' onClick={() => navigate('/register')}>
-            Register
+            <FormattedMessage
+              id="register"
+              defaultMessage="Register"
+            />
           </Link>
         </Text>
 
-
+        <LangWrapper>
+          <LanguageSelector locale={locale} setLocale={setLocale}/>
+        </LangWrapper>
       </Stack>
     </Container>
   )

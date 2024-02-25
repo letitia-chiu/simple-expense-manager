@@ -9,20 +9,23 @@ import { useState } from 'react'
 import { deleteCategory } from '../api/category'
 import { useApiErr } from '../utils/ApiErrorContext' 
 import { toast, handleDelete } from '../utils/helpers'
+import { FormattedMessage } from 'react-intl'
+import toastMsg from '../utils/toast-messages'
 
 const CategoryItem = ({ category }) => {
   const [isDeleted, setIsDeleted] = useState(false)
   const { apiErrorHandler } = useApiErr()
   const categoryName = category.name.length > 20 ? category.name.substring(0, 20) + '...' : category.name
+  const locale = localStorage.getItem('lang') || 'en'
 
   const deleteCategoryAsync = async (id) => {
     try {
       const res = await deleteCategory(id)
       if (res.success) {
         setIsDeleted(true)
-        toast('success', 'Delete category successfully')
+        toast('success', toastMsg.delete[locale]?.success || 'Delete successfully')
       } else {
-        apiErrorHandler(res, 'Failed to delete category')
+        apiErrorHandler(res, toastMsg.delete[locale]?.fail || 'Failed to delete')
       }
     } catch (err) {
       toast('error', err)
@@ -45,13 +48,17 @@ const CategoryItem = ({ category }) => {
       <AccordionPanel pb={4}>
         <ButtonGroup size='sm' spacing={5} my={3}>
           <Link to={`/category/${category.id}/edit`}>
-            <Button leftIcon={<EditIcon />} colorScheme='blue'>Edit</Button>
+            <Button leftIcon={<EditIcon />} colorScheme='blue'>
+              <FormattedMessage id="edit" defaultMessage="edit"/>
+            </Button>
           </Link>
           <Button
             leftIcon={<DeleteIcon />}
             colorScheme='red'
-            onClick={() => handleDelete?.(category.id, deleteCategoryAsync)}
-          >Delete</Button>
+            onClick={() => handleDelete?.(category.id, deleteCategoryAsync, locale)}
+          >
+            <FormattedMessage id="delete" defaultMessage="Delete"/>
+          </Button>
         </ButtonGroup>
       </AccordionPanel>
     </AccordionItem>

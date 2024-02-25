@@ -10,6 +10,7 @@ A straightforward web app designed to help you manage your daily expenses.
 - Users can add, view, edit, and delete income or expense categories.
 - Users can view monthly financial reports.
 - Users can switch between light and dark mode.
+- Supported languages: English / Chinese / Japanese
 
 ### Live Site URL & Back-End Repository
 - Live Site URL: [Simple Expense Manager](https://letitia-chiu.github.io/simple-expense-manager)

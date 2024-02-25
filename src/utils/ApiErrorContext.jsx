@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from './helpers'
+import toastMsg from './toast-messages'
 
 const defaultContext = {
   apiErrorHandler: null
@@ -12,16 +13,24 @@ export const useApiErr = () => useContext(ApiErrorContext)
 
 export const ApiErrProvider = ({ children }) => {
   const navigate = useNavigate()
+  const locale = localStorage.getItem('lang') || 'en'
 
   const apiErrorHandler = (res, errTitle) => {
     const isUnauthorized = res.status ? res.status === 401 : false
     let title = ''
     if (isUnauthorized) {
-      title = 'Please login'
+      title = toastMsg.login[locale]?.fail || 'Login Failed'
     } else {
       title = errTitle || 'Loading Failed'
     }
-    const text = res.message || ''
+    let text = '' 
+    if (res.message) {
+      if (res.message === 'Invalid email or password') {
+        text = toastMsg.login[locale]?.invalid || res.message
+      } else {
+        text = res.message
+      }
+    }
   
     // Show error toast
     toast('error', title, text)

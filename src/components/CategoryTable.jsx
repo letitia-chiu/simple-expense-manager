@@ -10,6 +10,8 @@ import DeleteIcon from '../assets/delete.svg?react'
 import { 
   Table, Thead, Tbody, Tr, Th, Td, TableContainer 
 } from '@chakra-ui/react'
+import { FormattedMessage } from 'react-intl'
+import toastMsg from '../utils/toast-messages'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -42,15 +44,16 @@ function HeaderColumn({ column }) {
 function CategoryRow({ category }) {
   const [isDeleted, setIsDeleted] = useState(false)
   const { apiErrorHandler } = useApiErr()
+  const locale = localStorage.getItem('lang') || 'en'
 
   const deleteCategoryAsync = async (id) => {
     try {
       const res = await deleteCategory(id)
       if (res.success) {
         setIsDeleted(true)
-        toast('success', 'Delete category successfully')
+        toast('success', toastMsg.delete[locale]?.success || 'Delete successfully')
       } else {
-        apiErrorHandler(res, 'Failed to delete category')
+        apiErrorHandler(res, toastMsg.delete[locale]?.fail || 'Failed to delete')
       }
     } catch (err) {
       toast('error', err)
@@ -73,7 +76,7 @@ function CategoryRow({ category }) {
             <ActionButton><EditIcon /></ActionButton>
           </Link>
           <ActionButton 
-            onClick={() => handleDelete?.(category.id, deleteCategoryAsync)}
+            onClick={() => handleDelete?.(category.id, deleteCategoryAsync, locale)}
           >
             <DeleteIcon />
           </ActionButton>
@@ -88,8 +91,8 @@ function CategoryRow({ category }) {
 function CategoryTable({ categories }) {
   // ** Define columns
   const columns = [
-    { name: 'Category Name' },
-    { name: 'Actions', justify: 'center' }
+    { name: <FormattedMessage id="col.categoryName" defaultMessage="Category name"/> },
+    { name: <FormattedMessage id="col.action" defaultMessage="Actions"/>, justify: 'center' }
   ]
 
   // ******** JSX return ******** //
@@ -99,8 +102,8 @@ function CategoryTable({ categories }) {
         <Table variant='simple'>
           <Thead>
             <Tr>
-              {columns.map(c => (
-                <HeaderColumn key={c.name} column={c} />
+              {columns.map((c, index) => (
+                <HeaderColumn key={index} column={c} />
               ))}
             </Tr>
           </Thead>

@@ -9,8 +9,10 @@ import StyledCell from './StyledCell'
 import EditIcon from '../assets/edit.svg?react'
 import DeleteIcon from '../assets/delete.svg?react'
 import { 
-  Table, Thead, Tbody, Tr, Th, Td, TableContainer 
+  Table, Thead, Tbody, Tr, Th, Td,
 } from '@chakra-ui/react'
+import { FormattedMessage } from 'react-intl'
+import toastMsg from '../utils/toast-messages'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -50,15 +52,16 @@ function RecordRow({ record }) {
   const [isDeleted, setIsDeleted] = useState(false)
   const { apiErrorHandler } = useApiErr()
   const recordTitle = record.title.length > 30 ? record.title.substring(0, 30) + '...' : record.title
+  const locale = localStorage.getItem('lang') || 'en'
 
   const deleteRecordAsync = async (id) => {
     try {
       const res = await deleteRecord(id)
       if (res.success) {
         setIsDeleted(true)
-        toast('success', 'Delete record successfully')
+        toast('success', toastMsg.delete[locale]?.success || 'Delete successfully')
       } else {
-        apiErrorHandler(res, 'Failed to delete record')
+        apiErrorHandler(res, toastMsg.delete[locale]?.fail || 'Failed to delete')
       }
     } catch (err) {
       toast('error', err)
@@ -96,7 +99,7 @@ function RecordRow({ record }) {
             <ActionButton><EditIcon /></ActionButton>
           </Link>
           <ActionButton 
-            onClick={() => handleDelete?.(record.id, deleteRecordAsync)}
+            onClick={() => handleDelete?.(record.id, deleteRecordAsync, locale)}
           >
             <DeleteIcon />
           </ActionButton>
@@ -111,11 +114,11 @@ function RecordRow({ record }) {
 function RecordTable({ records }) {
   // ** Define columns
   const columns = [
-    { name: 'Date', justify: 'center' },
-    { name: 'Title', width: '15vw' },
-    { name: 'Category', justify: 'center' },
-    { name: 'Amount', justify: 'center' },
-    { name: 'Actions', justify: 'center' }
+    { name: <FormattedMessage id="col.date" defaultMessage="Date"/>, justify: 'center' },
+    { name: <FormattedMessage id="col.title" defaultMessage="Title"/>, width: '15vw' },
+    { name: <FormattedMessage id="col.category" defaultMessage="Category"/>, justify: 'center' },
+    { name: <FormattedMessage id="col.amount" defaultMessage="Amount"/>, justify: 'center' },
+    { name: <FormattedMessage id="col.action" defaultMessage="Actions"/>, justify: 'center' }
   ]
 
   // ******** JSX return ******** //
@@ -124,8 +127,8 @@ function RecordTable({ records }) {
       <Table variant='simple'>
         <Thead>
           <Tr>
-            {columns.map(c => (
-              <HeaderColumn key={c.name} column={c} />
+            {columns.map((c, index) => (
+              <HeaderColumn key={index} column={c} />
             ))}
           </Tr>
         </Thead>
